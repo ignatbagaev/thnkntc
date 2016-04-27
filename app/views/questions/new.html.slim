@@ -1,0 +1,22 @@
+h2.text-center Feel free to ask whatever you want!
+p.text-muted.text-center * - required fields
+hr
+= form_for @question do |f|
+  - if @question.errors.any?
+    div#error_explanation.col-md-offset-2.col-md-8 
+      h2.action-error
+        = pluralize(@question.errors.count, "error")
+        |  prohibited this question from being saved:
+      ul.action-error
+        - @question.errors.full_messages.each do |message|
+          li= message
+  div.col-md-offset-4.col-md-4 
+    div.field
+      = f.label :title
+      = f.text_field :title, class: 'form-control'
+    div.field
+      = f.label :body
+      = f.text_area :body, rows: '10', class: 'form-control'
+      br
+    div.actions
+      = f.submit 'Ask', class: 'btn btn-default pull-right'

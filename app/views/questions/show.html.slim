@@ -1,0 +1,8 @@
+- if notice
+  div#success_explanation.col-md-offset-3.col-md-6
+    h5.text-center.action-success= notice
+
+div.col-md-offset-3.col-md-6
+  h2.text-center = @question.title
+  hr
+  h4= simple_format @question.body

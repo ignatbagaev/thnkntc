@@ -2,14 +2,7 @@ h2.text-center Feel free to ask whatever you want!
 p.text-muted.text-center * - required fields
 hr
 = form_for @question do |f|
-  - if @question.errors.any?
-    div#error_explanation.col-md-offset-2.col-md-8 
-      h2.action-error
-        = pluralize(@question.errors.count, "error")
-        |  prohibited this question from being saved:
-      ul.action-error
-        - @question.errors.full_messages.each do |message|
-          li= message
+  = render 'shared/error_messages', object: f.object
   div.col-md-offset-4.col-md-4 
     div.field
       = f.label :title
@@ -19,4 +12,7 @@ hr
       = f.text_area :body, rows: '10', class: 'form-control'
       br
     div.actions
-      = f.submit 'Ask', class: 'btn btn-default pull-right'
+      div.pull-left
+        = link_to 'Back', questions_path, class: 'btn btn-default pull-right'
+      div.pull-right
+        = f.submit 'Ask', class: 'btn btn-default pull-right'

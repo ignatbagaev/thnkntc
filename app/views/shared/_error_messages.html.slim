@@ -1,0 +1,10 @@
+- if object.errors.any?
+  div#error_explanation.col-md-12 
+    p.action-error
+      = pluralize(object.errors.count, "error")
+      |  prohibited this 
+      = object.model_name
+      |  from being saved:
+    ul.action-error
+      - object.errors.full_messages.each do |message|
+        li= message

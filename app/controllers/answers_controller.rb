@@ -1,23 +1,23 @@
 class AnswersController < ApplicationController
   before_action :load_question
   
-  def new
-    @answer = Answer.new
-  end
-
   def create
     @answer = @question.answers.new(answer_params)
-    if @answer.save
-      redirect_to @question
-    else
-      render 'new'
-    end
+    success or error
   end
 
   private
 
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def success
+    redirect_to @question, notice: "Thank you for reply!" if @answer.save
+  end
+
+  def error
+    render 'questions/show'
   end
 
   def load_question

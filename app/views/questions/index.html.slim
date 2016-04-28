@@ -1,0 +1,20 @@
+div.col-md-offset-3.col-md-6
+  - if @questions.any?
+    div.row
+      div.pull-left
+        h3
+          | There is 
+          = pluralize(@questions.count, "question")
+          |  here.
+      div.pull-right
+        h3= link_to 'New question', new_question_path
+    table.table
+      thead
+        tr
+          th #
+          th Title
+        = render @questions
+  - else 
+    h4.col-md-offset-3.col-md-6.vertical-align.text-center
+      | Nobody left questions yet.
+      = link_to 'Be first!', new_question_path

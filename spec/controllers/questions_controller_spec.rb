@@ -26,6 +26,14 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'GET #index' do
+    let(:questions) { create_list(:question, 5)}
+    before { get :index }
+    it 'assigns all questions to @questions' do
+      expect(assigns(:questions)).to eq (questions)
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves new questioh to database' do

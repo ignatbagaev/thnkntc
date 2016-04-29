@@ -22,11 +22,11 @@
 .new-answer-form label {
   display: none;
 }
-a {
+a:not[class*=default] {
   color: black;
   text-decoration: none;
 } 
-a:hover {
+a:not[class*=default]:hover {
   color: black;
   text-decoration: none;
 }

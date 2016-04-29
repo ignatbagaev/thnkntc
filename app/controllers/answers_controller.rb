@@ -1,15 +1,16 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :load_question
   
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = @question.answers.new answer_params
     success or error
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body).merge(user: current_user)
   end
 
   def success

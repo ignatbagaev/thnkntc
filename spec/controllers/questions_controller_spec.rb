@@ -53,7 +53,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     describe 'POST #create' do
       context 'with valid attributes' do
-        it 'saves new questioh to database' do
+        it 'saves new question to database' do
           expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by 1
         end
         it 'redirects to show view' do
@@ -69,6 +69,32 @@ RSpec.describe QuestionsController, type: :controller do
         it 'renders new view' do
           post :create, question: attributes_for(:invalid_question)
           expect(response).to render_template :new
+        end
+      end
+    end
+
+    describe 'DELETE #destroy' do
+      login_user
+      let(:user) { create :user }
+      let(:question) { create :question }
+      before { @user.questions << question}
+      context 'own question' do
+        it 'deletes question' do
+          expect { delete :destroy, id: question.id }.to change(@user.questions, :count).by(-1)
+        end
+        it 'redirects to questions list' do
+          delete :destroy, id: question.id
+          expect(response).to redirect_to questions_path
+        end
+      end
+      context 'someone\'s question' do
+        before { user.questions << question }
+        it 'does not delete question' do
+          expect { delete :destroy, id: question.id }.to_not change(Question, :count)
+        end          
+        it 'redirects to questions list' do
+          delete :destroy, id: question.id
+          expect(response).to redirect_to question_path(question)
         end
       end
     end

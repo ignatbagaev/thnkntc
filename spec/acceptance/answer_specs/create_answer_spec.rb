@@ -35,12 +35,11 @@ feature 'create answers', %q{
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'with invalid attributes unless user logged in' do
+  scenario 'with invalid attributes' do
     log_in
     visit_question_path
     fill_in "Body", with: nil
     click_on "Send"
-    expect(page).to have_content("error")
-    expect(current_path).to eq question_answers_path(question)
+    expect(current_path).to eq question_path(question)
   end
 end

@@ -3,12 +3,14 @@
     h5.text-center.action-success= notice
 
 div.col-md-offset-3.col-md-6
-  div
-    div.pull-right.col-md-1
+  div.col-md-12
+    h4 = @question.title
+    h4= simple_format @question.body
+    div.pull-left.col-md-1
       h4= link_to 'Back', questions_path, class: 'btn btn-default'
-    div.pull-left.col-md-11
-      h4 = @question.title
-  h4= simple_format @question.body
+    - if @question.user == current_user
+      div.pull-right.col-md-3
+        h4= link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default'
   hr
   br
   div.answers
@@ -19,7 +21,13 @@ div.col-md-offset-3.col-md-6
         th #
         th Body
         th
-      = render @answers
+      - @question.answers.each do |answer|
+        tr
+          td= @question.answers.index(answer) + 1
+          td= simple_format answer.body
+          td
+            - if answer.user == current_user
+              = link_to 'Delete', question_answer_path(@question, answer), method: :delete
     hr
     div.new-answer-form  
       strong Can help? Send an answer! 

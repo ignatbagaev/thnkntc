@@ -35,7 +35,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should re-render new template' do
         post :create, question_id: question.id, answer: { body: nil }
 
-        expect(response).to render_template 'questions/show'
+        expect(response).to redirect_to question
       end
     end
   end

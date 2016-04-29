@@ -6,7 +6,6 @@ class QuestionsController < ApplicationController
 
   def show
     @question = Question.find(params[:id])
-    @answers = @question.answers
   end
 
   def index
@@ -20,6 +19,16 @@ class QuestionsController < ApplicationController
       redirect_to @question
     else
       render 'new'
+    end
+  end
+
+  def destroy
+    @question = Question.find(params[:id])
+    if @question.user == current_user
+      @question.destroy 
+      redirect_to questions_path
+    else
+      redirect_to @question
     end
   end
 

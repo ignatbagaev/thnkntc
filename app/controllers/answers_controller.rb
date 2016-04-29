@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
   end
 
   def error
-    render 'questions/show'
+    redirect_to @question
   end
 
   def load_answer

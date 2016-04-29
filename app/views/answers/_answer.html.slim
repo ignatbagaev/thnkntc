@@ -1,1 +1,6 @@
-h5= answer.body
+tr
+  td= @question.answers.index(answer) + 1
+  td= simple_format answer.body
+  td
+    -if answer.user == current_user
+      = link_to 'Delete', question_answer_path(@question, answer), method: :delete

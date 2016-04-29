@@ -1,9 +1,15 @@
 class AnswersController < ApplicationController
   before_action :load_question
+  before_action :load_answer, only: :destroy
   
   def create
     @answer = @question.answers.new answer_params
     success or error
+  end
+
+  def destroy
+    @answer.destroy if @answer.user == current_user
+    redirect_to @question
   end
 
   private
@@ -18,6 +24,10 @@ class AnswersController < ApplicationController
 
   def error
     render 'questions/show'
+  end
+
+  def load_answer
+    @answer = Answer.find(params[:id])
   end
 
   def load_question

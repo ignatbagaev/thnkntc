@@ -4,22 +4,27 @@
 
 div.col-md-offset-3.col-md-6
   div
-    div.pull-left.col-md-11
-      h4 = @question.title
     div.pull-right.col-md-1
       h4= link_to 'Back', questions_path, class: 'btn btn-default'
+    div.pull-left.col-md-11
+      h4 = @question.title
   h4= simple_format @question.body
   hr
   br
   div.answers
     h4.text-center
       strong Answers:
-    = render @question.answers
+    table
+      tr
+        th #
+        th Body
+        th
+      = render @answers
     hr
     div.new-answer-form  
       strong Can help? Send an answer! 
       - if current_user
-        = form_for ([@question, @answer]) do |f|
+        = form_for ([@question, @question.answers.build]) do |f|
           div.errors
             = render 'shared/error_messages', object: f.object
           br

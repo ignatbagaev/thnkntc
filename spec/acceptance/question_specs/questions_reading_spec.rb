@@ -6,19 +6,35 @@ feature 'User could see listing of questions', %q{
   I want to have access to listing of all questions
 } do
 
-  context 'when there are not questions' do
-    scenario 'user could see link to create first question' do
+  context 'when user is not authorized' do
+    scenario 'page has not links to new question path' do
       visit questions_path
+      expect(page).to_not have_selector(:link_or_button, 'Be first!')
+      expect(page).to_not have_selector(:link_or_button, 'New question')
+    end
+  end
 
+  given(:user) { create :user }
+  def log_in
+    visit new_user_session_path
+    fill_in "Email", with: user.email
+    fill_in "Password", with: user.password
+    click_on "Log in"
+  end
+
+  context 'when user authorized and there are not questions' do
+    scenario 'user could see link to create first question' do
+      log_in
+      visit questions_path
       expect(page).to have_selector(:link_or_button, 'Be first!')
       expect(page).to_not have_selector(:link_or_button, 'New question')
     end
   end
 
-  context 'when there are questions' do
+  context 'when user authorized and there are questions' do
     given!(:questions) { create_list(:question, 5) }
-    
     scenario 'user could see listing of questions' do
+      log_in
       visit questions_path
       expect(page).to_not have_selector(:link_or_button, 'Be first!')
       expect(page).to have_selector(:link_or_button, 'New question')

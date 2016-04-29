@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:show, :index]
   def new
     @question = Question.new
   end
@@ -25,6 +26,6 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body).merge(user: current_user)
   end
 end

@@ -6,8 +6,8 @@ feature 'create answers', %q{
   I want to be able to create answers
 } do 
   
-  given(:question) {create :question}
   given(:user) { create :user }
+  given(:question) {create :question}
   def visit_question_path
     visit question_path(question)
   end

@@ -4,14 +4,6 @@ feature 'user signs up' do
 
   given(:user) { create :user }
   
-  def sign_up_with(email, password)
-    visit new_user_registration_path
-    fill_in "Email", with: email
-    fill_in "Password", with: password
-    fill_in "Password confirmation", with: password
-    click_on "Sign up"
-  end
-
   scenario 'with valid email and password' do
     sign_up_with('test@email.com', 'password')
     expect(current_path).to eq root_path

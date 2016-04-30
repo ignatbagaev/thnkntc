@@ -3,14 +3,7 @@ require 'rails_helper'
 feature 'user logs in' do
   
   given(:user) { create :user }
-
-  def log_in_with(email, password)
-    visit new_user_session_path
-    fill_in "Email", with: email
-    fill_in "Password", with: password
-    click_on "Log in"
-  end
-
+  
   scenario 'with valid email and valid password' do
     log_in_with(user.email, user.password)
     expect(page).to have_content("Signed in successfully")

@@ -1,47 +1,23 @@
-- if notice
-  div#success_explanation.col-md-offset-3.col-md-6
-    h5.text-center.action-success= notice
-
-div.col-md-offset-3.col-md-6
-  div.col-md-12
-    h4 = @question.title
-    h4= simple_format @question.body
-    div.pull-left.col-md-1
-      h4= link_to 'Back', questions_path, class: 'btn btn-default'
-    - if @question.user == current_user
-      div.pull-right.col-md-3
-        h4= link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default'
-  hr
+div.col-md-offset-2.col-md-8.col-sm-12
+  h4 = @question.title
+  h4= simple_format @question.body
+  div.actions
+    div.pull-left
+      = link_to 'Back', questions_path, class: 'btn btn-default pull-right'
+    - if able_to_delete? @question
+      div.pull-right
+        = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default'
   br
-  div.answers
-    h4.text-center
-      strong Answers:
-    table
-      tr
-        th #
-        th Body
-        th
-      - @question.answers.each do |answer|
-        tr
-          td= @question.answers.index(answer) + 1
-          td= simple_format answer.body
-          td
-            - if answer.user == current_user
-              = link_to 'Delete', question_answer_path(@question, answer), method: :delete
+  br
+  hr
+div.col-md-offset-2.col-md-8.col-sm-12
+  h5.text-center
+    strong Answers:
+  - @question.answers.each do |answer|
+    h6.text-center= @question.answers.index(answer) + 1
+    h5= answer.body
+    h5.text-right
+      - if able_to_delete? answer
+        = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'btn-sm btn-default'
     hr
-    div.new-answer-form  
-      strong Can help? Send an answer! 
-      - if current_user
-        = form_for ([@question, @question.answers.build]) do |f|
-          div.errors
-            = render 'shared/error_messages', object: f.object
-          br
-          div
-            = f.label :body
-            = f.text_area :body, rows: '5', class: 'form-control'
-          br
-          div.actions
-            = f.submit 'Send', class: 'btn btn-default pull-right'
-      - else
-        = link_to 'Sign in', new_user_session_path, class: 'default'
-        |  to do it!
+= render 'answers/form'

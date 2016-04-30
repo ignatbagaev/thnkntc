@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
 
   has_many :answers
   has_many :questions
+
+  def author_of?(obj)
+    obj.user_id == self.id ? true : false
+  end
 end

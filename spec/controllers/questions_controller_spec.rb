@@ -52,9 +52,10 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     describe 'POST #create' do
+      login_user
       context 'with valid attributes' do
-        it 'saves new question to database' do
-          expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by 1
+        it 'assciates new question with user and saves it to database' do
+          expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
         end
         it 'redirects to show view' do
           post :create, question: attributes_for(:question)

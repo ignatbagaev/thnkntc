@@ -15,26 +15,19 @@ feature 'User could see listing of questions', %q{
   end
 
   given(:user) { create :user }
-  def log_in
-    visit new_user_session_path
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_on "Log in"
-  end
 
   context 'when user authorized and there are not questions' do
     scenario 'user could see link to create first question' do
-      log_in
+      log_in user
       visit questions_path
       expect(page).to have_selector(:link_or_button, 'Be first!')
-      expect(page).to_not have_selector(:link_or_button, 'New question')
     end
   end
 
   context 'when user authorized and there are questions' do
     given!(:questions) { create_list(:question, 5) }
     scenario 'user could see listing of questions' do
-      log_in
+      log_in user
       visit questions_path
       expect(page).to_not have_selector(:link_or_button, 'Be first!')
       expect(page).to have_selector(:link_or_button, 'New question')

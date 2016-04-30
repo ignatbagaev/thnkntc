@@ -8,25 +8,15 @@ feature 'create answers', %q{
   
   given(:user) { create :user }
   given(:question) {create :question}
-  def visit_question_path
-    visit question_path(question)
-  end
-
-  def log_in
-    visit new_user_session_path
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_on "Log in"
-  end
 
   scenario 'unless user logged in' do
-    visit_question_path
+    visit question_path(question)
     expect(page).to have_content("Sign in to do it")
   end
 
   scenario 'with valid attributes if user logged in' do
-    log_in
-    visit_question_path
+    log_in user
+    visit question_path(question)
     fill_in "Body", with: "Some long text"
     click_on "Send"
 
@@ -36,10 +26,10 @@ feature 'create answers', %q{
   end
 
   scenario 'with invalid attributes' do
-    log_in
-    visit_question_path
+    log_in user
+    visit question_path(question)
     fill_in "Body", with: nil
     click_on "Send"
-    expect(current_path).to eq question_path(question)
+    expect(current_path).to eq question_answers_path(question)
   end
 end

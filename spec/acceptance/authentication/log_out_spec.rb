@@ -7,20 +7,13 @@ feature 'user can log out', %q{
 } do
   given(:user) { create(:user) }
 
-  def log_in
-    visit new_user_session_path
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_on "Log in"
-  end
-
   scenario 'page have link to log out' do
-    log_in
+    log_in user
     expect(page).to have_selector(:link_or_button, "Log out")
   end
 
   scenario 'user could log out' do
-    log_in
+    log_in user
     click_on "Log out"
     expect(current_path).to eq root_path
     expect(page).to have_selector(:link_or_button, "Sign in")

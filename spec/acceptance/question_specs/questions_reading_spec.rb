@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User could see listing of questions', %q{
+feature 'User could see list of questions', %q{
   In order to be able to find some question
   As user
   I want to have access to listing of all questions
@@ -51,6 +51,15 @@ feature 'User could visit the show page of question', %q{
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.title)
     expect(page).to have_selector(:link_or_button, 'Back')
+  end
+
+  given(:answers) {create_list(:answer, 5)} 
+  before { question.answers << answers }
+  scenario 'user could see the list of answers associated with question' do
+    visit question_path(question)
+    answers.each do |answer|
+      expect(page).to have_content(answer.body)
+    end
   end
 end
 

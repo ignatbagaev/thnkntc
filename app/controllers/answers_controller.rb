@@ -1,15 +1,15 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_question
-  before_action :load_answer, only: :destroy
   
   def create
-    @answer = @question.answers.new answer_params.merge(user: current_user)
+    @answer = Answer.new(answer_params.merge(user: current_user, question: @question))
     save_answer or render template: 'questions/show'
   end
 
   def destroy
-    @answer.destroy if @answer.user_id == current_user.id
+    @answer = Answer.find(params[:id])
+    destroy_answer
     redirect_to @question
   end
 
@@ -23,8 +23,8 @@ class AnswersController < ApplicationController
     redirect_to @question, notice: "Thank you for reply!" if @answer.save
   end
 
-  def load_answer
-    @answer = Answer.find(params[:id])
+  def destroy_answer
+    @answer.destroy if current_user.author_of?(@answer)
   end
 
   def load_question

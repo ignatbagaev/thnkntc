@@ -22,25 +22,18 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  context 'when user is not logged in' do 
-    describe 'GET #new' do
+  describe 'GET #new' do
+
+    context 'when user is not logged in' do 
       it 'redirects to login page' do
         get :new
         expect(response).to redirect_to new_user_session_path
       end
     end
 
-    describe 'POST #create' do
-      it 'does not saves the question' do
-        expect { post :create, question: attributes_for(:question) }.to_not change(Question, :count)
-      end
-    end
-  end
-  
-  context 'when user logged in' do
-    login_user
-    describe 'GET #new' do
-      before { get :new }
+    context 'when user logged in' do
+      login_user
+      before(:each) { get :new }
 
       it 'assigns new question to @question' do
         expect(assigns(:question)).to be_a_new Question
@@ -50,35 +43,55 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :new
       end
     end
+  end
 
-    describe 'POST #create' do
-      login_user
-      context 'with valid attributes' do
-        it 'assciates new question with user and saves it to database' do
-          expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
-        end
-        it 'redirects to show view' do
-          post :create, question: attributes_for(:question)
-          expect(response).to redirect_to question_path(assigns(:question))
-        end
-      end
-
-      context 'with invalid attributes' do 
-        it 'does not save question to database' do
-          expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
-        end
-        it 'renders new view' do
-          post :create, question: attributes_for(:invalid_question)
-          expect(response).to render_template :new
-        end
+  describe 'POST #create' do
+    context 'when user is not logged in' do
+      it 'does not saves the question' do
+        expect { post :create, question: attributes_for(:question) }.to_not change(Question, :count)
       end
     end
 
-    describe 'DELETE #destroy' do
+
+    context 'with valid attributes when user logged in' do
+      login_user
+      it 'assciates new question with user and saves it to database' do
+        expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
+      end
+      it 'redirects to show view' do
+        post :create, question: attributes_for(:question)
+        expect(response).to redirect_to question_path(assigns(:question))
+      end
+    end
+    
+    context 'with invalid attributes when user logged in' do
+      login_user
+      it 'does not save question to database' do
+        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+      end
+      it 'renders new view' do
+        post :create, question: attributes_for(:invalid_question)
+        expect(response).to render_template :new
+      end
+    end
+  end
+  
+  describe 'DELETE #destroy' do
+    context 'if user not logged in' do
+      let(:user) { create :user }
+      let(:question) { create :question }
+      before { user.questions << question }
+      it 'does not delete question' do
+        expect { delete :destroy, id: question.id }.to_not change(Question, :count)
+      end        
+    end
+
+    context 'if user logged in' do
       login_user
       let(:user) { create :user }
       let(:question) { create :question }
       before { @user.questions << question}
+
       context 'own question' do
         it 'deletes question' do
           expect { delete :destroy, id: question.id }.to change(@user.questions, :count).by(-1)
@@ -88,6 +101,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to redirect_to questions_path
         end
       end
+
       context 'someone\'s question' do
         before { user.questions << question }
         it 'does not delete question' do

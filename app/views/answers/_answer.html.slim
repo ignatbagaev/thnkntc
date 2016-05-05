@@ -1,0 +1,8 @@
+- if answer.valid? # - без этого условия при попытке созать невалидный ответ - ошибка в ссылке на удаление(missing required keys - ID)
+  li.list-group-item
+    h4.text-center= @question.answers.index(answer) + 1
+    h5= answer.body
+    h6.text-right
+      - if able_to_delete? answer
+        = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'btn-sm btn-default'
+  hr

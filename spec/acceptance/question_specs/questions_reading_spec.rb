@@ -53,8 +53,8 @@ feature 'User could visit the show page of question', %q{
     expect(page).to have_selector(:link_or_button, 'Back')
   end
 
-  given(:answers) {create_list(:answer, 5)} 
-  before { question.answers << answers }
+  given!(:answers) { create_list(:answer, 5, question: question) }
+  
   scenario 'user could see the list of answers associated with question' do
     visit question_path(question)
     answers.each do |answer|

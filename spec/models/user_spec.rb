@@ -8,18 +8,16 @@ RSpec.describe User, type: :model do
   it { should have_many(:questions) }
   it { should respond_to(:author_of?)}
 
+  let(:user) { create :user }
+  let(:question) { create :question, user: user }
+  let(:user2) { create :user }
+
   it 'returns true when object is associated with user' do
-    user = FactoryGirl.create(:user)
-    question = FactoryGirl.create(:question)
-    user.questions << question
-    expect(user.author_of?(question)).to eq true
+    expect(user).to be_author_of question
   end
   
-  it 'returns false when object is associated with user' do
-    user = FactoryGirl.create(:user)
-    user2 = FactoryGirl.create(:another_user)
-    question = FactoryGirl.create(:question)
+  it 'returns false when object is not associated with user' do
     user2.questions << question
-    expect(user.author_of?(question)).to eq false
+    expect(user).to_not be_author_of question
   end
 end

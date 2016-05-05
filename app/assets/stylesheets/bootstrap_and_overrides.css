@@ -36,3 +36,7 @@ a:not[class*=default]:hover {
 h4 > p {
   color: #777;
 }
+.list-group-item {
+  border: none;
+  padding: 0;
+}

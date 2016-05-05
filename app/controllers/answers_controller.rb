@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
   
   def create
     @answer = Answer.new(answer_params.merge(user: current_user, question: @question))
-    save_answer or render template: 'questions/show'
+    save_answer
   end
 
   def destroy
@@ -20,7 +20,7 @@ class AnswersController < ApplicationController
   end
 
   def save_answer
-    redirect_to @question, notice: "Thank you for reply!" if @answer.save
+    @answer.save
   end
 
   def destroy_answer

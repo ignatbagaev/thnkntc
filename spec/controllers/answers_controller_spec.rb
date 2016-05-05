@@ -9,31 +9,31 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid parameters' do
       it 'it associates answer with question and saves it to database' do
         expect { post :create, question_id: question.id,
-                               answer: attributes_for(:answer) }
+                               answer: attributes_for(:answer), format: :js }
               .to change(question.answers, :count).by 1 
       end
 
       it 'it associates answer with user and saves it to database' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
               .to change(@user.answers, :count).by 1 
       end
 
       it 'should redirect to question page' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(question)
+        post :create, question_id: question.id, answer: attributes_for(:answer), format: :js
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid parameters' do
       it 'should not create new answer' do
         expect { post :create, question_id: question.id, 
-                               answer: { body: nil } 
+                               answer: { body: nil }, format: :js
                 }.to_not change(Answer, :count)
       end
       it 'should re-render new template' do
-        post :create, question_id: question.id, answer: { body: nil }
+        post :create, question_id: question.id, answer: { body: nil }, format: :js
 
-        expect(response).to render_template 'questions/show'
+        expect(response).to render_template :create
       end
     end
   end

@@ -8,16 +8,12 @@ div.col-md-offset-2.col-md-8.col-sm-12
       div.pull-right
         = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default'
   br
-  br
   hr
 div.col-md-offset-2.col-md-8.col-sm-12
-  h5.text-center
-    strong Answers:
-  - @question.answers.each do |answer|
-    h6.text-center= @question.answers.index(answer) + 1
-    h5= answer.body
-    h5.text-right
-      - if able_to_delete? answer
-        = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'btn-sm btn-default'
-    hr
+  div.answers
+    h5.text-center
+      strong Answers:
+    ul.list-group
+      - @question.answers.each do |answer|
+        = render partial: 'answers/answer', locals: {answer: answer}
 = render 'answers/form'

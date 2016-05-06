@@ -53,7 +53,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirects back to question' do
         delete :destroy, id: answer.id, question_id: question.id
-        expect(response).to redirect_to question
+        expect(response).to redirect_to answer.question
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirects back to question' do
         delete :destroy, id: answer.id, question_id: question.id
-        expect(response).to redirect_to question
+        expect(response).to redirect_to answer.question
       end
     end
 end

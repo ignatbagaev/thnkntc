@@ -3,6 +3,6 @@
     h4.text-center= @question.answers.index(answer) + 1
     h5= answer.body
     h6.text-right
-      - if able_to_delete? answer
+      - if current_user && current_user.author_of?(answer)
         = link_to 'Delete answer', answer_path(answer), method: :delete, class: 'btn-sm btn-default'
   hr

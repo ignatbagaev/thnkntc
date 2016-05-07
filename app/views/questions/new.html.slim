@@ -1,17 +1,3 @@
 h4.text-center Feel free to ask whatever you want!
 hr
-div.col-md-offset-2.col-md-8.col-sm-12
-  = form_for @question do |f|
-    = render 'shared/error_messages', object: f.object
-    div.field
-      = f.label :title
-      = f.text_field :title, class: 'form-control'
-    div.field
-      = f.label :body
-      = f.text_area :body, rows: '5', class: 'form-control'
-      br
-    div.actions
-      div.pull-left
-        = link_to 'Back', questions_path, class: 'btn btn-default'
-      div.pull-right
-        = f.submit 'Ask',class: 'btn btn-default'
+= render 'form'

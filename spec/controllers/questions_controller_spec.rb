@@ -75,6 +75,81 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'GET #edit' do
+    let(:question) { create(:question) }
+
+    context 'if user is not logged in' do
+      it 'redirects to login page' do
+        get :edit, id: question
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    context 'if user is logged in' do
+      login_user
+
+      it 'assigns requested question to @question' do
+        get :edit, id: question
+        expect(assigns(:question)).to eq question 
+      end
+
+      it 'renders edit view if user owns the question' do
+        @user.questions << question
+        get :edit, id: question
+        expect(response).to render_template :edit
+      end
+
+      it 'redirect to show if user is not owner of question' do
+        get :edit, id: question
+        expect(response).to redirect_to question
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:question) { create :question }
+    context 'user is not logged in' do
+      it 'does not update the question' do
+        patch :update, id: question, question: { title: "Edited title", body: "Edited body" }
+        question.reload
+        expect(question.title).to_not eq "Edited title"
+        expect(question.body).to_not eq "Edited body"
+      end
+    end
+    context 'user is logged in' do
+      login_user
+      it 'assigns requested question to @question' do
+        patch :update, id: question, question: attributes_for(:question)
+        expect(assigns(:question)).to eq question
+      end
+      
+      it "does not update update anybody's question" do
+        patch :update, id: question, question: { title: "Edited title", body: "Edited body" }
+        question.reload
+        expect(question.title).to_not eq "Edited title"
+        expect(question.body).to_not eq "Edited body"
+      end
+
+      context 'user owns the question' do
+        it 'upates question with valid attributes if user owns the question' do
+          @user.questions << question
+          patch :update, id: question, question: { title: "Edited title", body: "Edited body" }
+          question.reload
+          expect(question.title).to eq "Edited title"
+          expect(question.body).to eq "Edited body"
+        end
+
+        it 'does not update question with invalid attributes' do
+          @user.questions << question
+          patch :update, id: question, question: { title: nil, body: nil }
+          question.reload
+          expect(question.title).to_not eq nil
+          expect(question.body).to_not eq nil
+        end
+      end
+    end
+  end
   
   describe 'DELETE #destroy' do
     context 'if user not logged in' do

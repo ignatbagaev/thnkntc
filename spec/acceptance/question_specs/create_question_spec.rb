@@ -7,13 +7,9 @@ feature 'create question', %q{
 } do
 
   given(:user) { create(:user) }
-
-  scenario 'unless user logged in' do
-    expect(page).to_not have_selector(:link_or_button, "New question")
-  end
+  before { log_in user }
 
   scenario 'with valid attributes if user logged in' do 
-    log_in user
     visit new_question_path
     fill_in "Title", with: 'My question'
     fill_in "Body",  with: 'Description of my issue'
@@ -25,12 +21,10 @@ feature 'create question', %q{
   end
 
   scenario 'with invalid attributes if user logged in' do
-    log_in user
     visit new_question_path
     fill_in "Title", with: nil
     fill_in "Body",  with: nil
     click_on 'Ask'
-
     expect(page).to have_content 'error'
   end
 end

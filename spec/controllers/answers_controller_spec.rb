@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer) { create(:answer)}
+  let(:answer) { create(:answer, question: question)}
 
   describe 'POST #create' do
     login_user
@@ -34,6 +34,60 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question.id, answer: { body: nil }, format: :js
 
         expect(response).to render_template :create
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    login_user
+    before { @user.answers << answer }
+    it 'assigns answer to @answer' do
+      get :edit, id: answer
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'renders edit view' do
+      get :edit, id: answer
+      expect(response).to render_template :edit
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:answer) { create :answer }
+    context 'user is not logged in' do
+      it 'does not update the answer' do
+        patch :update, id: answer, answer: { body: "Edited body" }
+        answer.reload
+        expect(answer.body).to_not eq "Edited body"
+      end
+    end
+    context 'user is logged in' do
+      login_user
+      it 'assigns requested answer to @answer' do
+        patch :update, id: answer, answer: attributes_for(:answer)
+        expect(assigns(:answer)).to eq answer
+      end
+      
+      it "does not update update anybody's answer" do
+        patch :update, id: answer, answer: { body: "Edited body" }
+        answer.reload
+        expect(answer.body).to_not eq "Edited body"
+      end
+
+      context 'user owns the answer' do
+        it 'updates answer with valid attributes if user owns the answer' do
+          @user.answers << answer
+          patch :update, id: answer, answer: { body: "Edited body" }
+          answer.reload
+          expect(answer.body).to eq "Edited body"
+        end
+
+        it 'does not update answer with invalid attributes' do
+          @user.answers << answer
+          patch :update, id: answer, answer: { body: nil }
+          answer.reload
+          expect(answer.body).to_not eq nil
+        end
       end
     end
   end

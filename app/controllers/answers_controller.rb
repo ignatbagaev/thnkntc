@@ -7,6 +7,16 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
+  def edit
+    @answer = Answer.find(params[:id])
+    current_user.author_of?(@answer) ? (render :edit) : (redirect_to @answer.question)
+  end
+
+  def update
+    @answer = Answer.find(params[:id])
+    update_answer or render :edit
+  end
+
   def destroy
     @answer = Answer.find(params[:id])
     destroy_answer
@@ -19,11 +29,17 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body)
   end
 
-  def destroy_answer
-    @answer.destroy if current_user.author_of?(@answer)
-  end
-
   def load_question
     @question = Question.find(params[:question_id])
+  end
+
+  def update_answer
+    if current_user.author_of? @answer
+      @answer.update(answer_params) ? (redirect_to @answer.question) : (render :edit)
+    end
+  end
+
+  def destroy_answer
+    @answer.destroy if current_user.author_of?(@answer)
   end
 end

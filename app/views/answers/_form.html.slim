@@ -1,17 +1,8 @@
-div.new-answer-form
-  div.col-md-offset-2.col-md-8.col-sm-12
-    h6.text-center
-      strong Send your answer 
-    - if current_user
-      = form_for([@question, @answer], remote: true) do |f|
-        div.errors
-          = render 'shared/error_messages', object: f.object
-        br
-        = f.label :body
-        = f.text_area :body, rows: '5', class: 'form-control'
-        br
-        = f.submit 'Send answer', class: 'btn btn-default pull-right'
-    - else
-      h5.text-center
-        = link_to 'Sign in', new_user_session_path, class: 'default'
-        |  to do it!
+= form_for([@question, @answer]) do |f|
+  div.errors
+    = render 'shared/error_messages', object: f.object
+  br
+  = f.label :body
+  = f.text_area :body, rows: '5', class: 'form-control'
+  br
+  = f.submit 'Send answer', class: 'btn btn-default pull-right'

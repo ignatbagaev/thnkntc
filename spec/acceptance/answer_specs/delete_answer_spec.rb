@@ -11,7 +11,7 @@ feature 'delete answer', %{
   given(:question) { create :question }
   given(:answer) { create :answer, question: question, user: user }
   
-  scenario 'user could delete own answer' do
+  scenario 'user could delete own answer', js: true do
     user.questions << question
     user.answers << answer
     log_in(user)

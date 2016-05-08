@@ -40,3 +40,6 @@ h4 > p {
   border: none;
   padding: 0;
 }
+.accept-hidden {
+  display: none;
+}

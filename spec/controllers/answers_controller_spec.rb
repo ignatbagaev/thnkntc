@@ -135,12 +135,20 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     let(:accepted_answer) { create(:accepted_answer)}
-    it 'could not mark as accepted more than 1 answer' do
+    it 'could accept another answer' do
       @user.questions << question
       question.answers << accepted_answer
       post :accept, id: answer, format: :js
       answer.reload
-      expect(answer.status).to eq "common"
+      expect(answer.status).to eq "accepted"
+    end
+
+    it 'changes previous accepted answer to common if user accepts another answer' do
+      @user.questions << question
+      question.answers << accepted_answer
+      post :accept, id: answer, format: :js
+      accepted_answer.reload
+      expect(accepted_answer.status).to eq "common"
     end
 
     it 'could not mark as accepted an answer of another\'s question' do

@@ -21,7 +21,10 @@ class AnswersController < ApplicationController
 
   def accept
     if current_user.author_of? @answer.question
-      @answer.update_attribute(:status, "accepted") unless @answer.question.has_accepted_answer?
+      @answer.question.answers.each do |answer|
+        answer.update_attribute(:status, 0)
+      end
+      @answer.update_attribute(:status, 1)
     end
   end
 

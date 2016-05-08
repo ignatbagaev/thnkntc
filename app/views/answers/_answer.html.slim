@@ -1,8 +1,11 @@
 - if answer.persisted?
   li.list-group-item{id="#{answer.id}"}
-    h4.text-center= @question.answers.index(answer) + 1
+    - if answer.accepted?
+      b Accepted
     h5= answer.body
     h6.text-right
+      - if current_user && current_user.author_of?(@question) && !@question.has_accepted_answer?
+        = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default accept', id: "accept-#{answer.id}"
       - if current_user && current_user.author_of?(answer)
         = link_to 'Edit answer', edit_answer_path(answer), class: 'btn-sm btn-default'
         = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'btn-sm btn-default'

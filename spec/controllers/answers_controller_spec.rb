@@ -92,7 +92,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy'
+  describe 'DELETE #destroy' do
     login_user
     let(:user) { create :user }
     context 'by owner' do
@@ -118,4 +118,36 @@ RSpec.describe AnswersController, type: :controller do
                 }.to_not change(question.answers, :count)
       end
     end
+  end
+
+  describe 'PATCH #accept' do
+    login_user
+
+    it 'assigns requested answer to @answer' do
+      post :accept, id: answer, format: :js
+      expect(assigns(:answer)).to eq answer
+    end
+    it 'marks answer as accepted for own question' do
+      @user.questions << question
+      post :accept, id: answer, format: :js
+      answer.reload
+      expect(answer.status).to eq "accepted"
+    end
+
+    let(:accepted_answer) { create(:accepted_answer)}
+    it 'could not mark as accepted more than 1 answer' do
+      @user.questions << question
+      question.answers << accepted_answer
+      post :accept, id: answer, format: :js
+      answer.reload
+      expect(answer.status).to eq "common"
+    end
+
+    it 'could not mark as accepted an answer of another\'s question' do
+      question.answers << accepted_answer
+      post :accept, id: answer, format: :js
+      answer.reload
+      expect(answer.status).to eq "common"
+    end
+  end
 end

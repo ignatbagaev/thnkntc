@@ -19,6 +19,12 @@ class AnswersController < ApplicationController
     @answer.destroy if current_user.author_of?(@answer)
   end
 
+  def accept
+    if current_user.author_of? @answer.question
+      @answer.update_attribute(:status, "accepted") unless @answer.question.has_accepted_answer?
+    end
+  end
+
   private
 
   def answer_params

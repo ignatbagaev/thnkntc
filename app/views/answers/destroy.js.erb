@@ -1,2 +1,6 @@
 var id = <%= @answer.id %>
-$('li#' + id).remove();
+$('li#' + id).hide();
+
+<% if @answer.accepted? %>
+  $('.accept').show();
+<% end %>

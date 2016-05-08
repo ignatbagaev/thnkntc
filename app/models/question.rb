@@ -3,4 +3,8 @@ class Question < ActiveRecord::Base
   belongs_to :user
   
   validates :title, :body, :user_id, presence: true
+
+  def has_accepted_answer?
+    self.answers.pluck(:status).include? 1
+  end
 end

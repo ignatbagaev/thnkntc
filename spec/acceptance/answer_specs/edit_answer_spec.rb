@@ -12,25 +12,35 @@ feature 'edit own answer', %q{
   before { question.answers << answer }
   before(:each) { log_in user }
   
-  scenario 'link to edit' do
+  scenario 'link to edit', js: true do
     visit question_path(question)
     click_link "Edit answer"
-    expect(current_path).to eq edit_answer_path(answer)
-  end
-
-  scenario 'with valid attributes' do
-    visit edit_answer_path(answer)
-    fill_in "Body", with: "Updated body of answer"
-    click_button "Send answer"
     expect(current_path).to eq question_path(question)
-
   end
 
-  scenario 'with invalid attributes' do
-    visit edit_answer_path(answer)
-    fill_in "Body", with: nil
-    click_button "Send answer"
-    expect(current_path).to eq answer_path(answer)
-    expect(page).to have_content("error")
+  scenario 'with valid attributes', js: true do
+    id = answer.id
+    visit question_path(question)
+    click_link "Edit answer"
+    # save_and_open_page
+    within("#edit-answer-#{id}") do
+      fill_in "Body", with: "Updated body of answer"
+      click_button "Save"
+    end
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content("Updated body of answer")
+    
+  end
+
+  scenario 'with invalid attributes', js: true do
+    id = answer.id
+    visit question_path(question)
+    click_link "Edit answer"
+    within("#edit-answer-#{id}") do
+      fill_in "Body", with: nil
+      click_button "Save"
+    end
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content("Body can't be blank")
   end
 end

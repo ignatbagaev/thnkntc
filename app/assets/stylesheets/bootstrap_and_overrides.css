@@ -43,3 +43,9 @@ h4 > p {
 .accept-hidden {
   display: none;
 }
+.edit-answer {
+  display: none;
+}
+.answer-error {
+  color: red;
+}

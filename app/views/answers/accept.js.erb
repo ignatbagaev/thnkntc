@@ -1,7 +1,7 @@
 var id = <%= @answer.id %>
 $('b.accepted').hide();
 $('.accept').show();
-$('li#answer-' + id).prependTo('ul.list-group');
+$('li#answer-row-' + id).prependTo('ul.list-group');
 $('b').html('');
-$('<b> Accepted <b>').prependTo( $('li#answer-' + id) );
+$('<b> Accepted <b>').prependTo( $('li#answer-row-' + id) );
 $('#accept-' + id).hide();

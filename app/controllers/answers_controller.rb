@@ -7,13 +7,13 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
-  def edit
-    current_user.author_of?(@answer) ? (render :edit) : (redirect_to @answer.question)
+  def update
+    if current_user.author_of? @answer
+      @answer.update(answer_params)
+      @question = @answer.question
+    end
   end
 
-  def update
-    update_answer or render :edit
-  end
 
   def destroy
     @answer.destroy if current_user.author_of?(@answer)
@@ -40,11 +40,5 @@ class AnswersController < ApplicationController
 
   def load_answer
     @answer = Answer.find(params[:id])
-  end
-
-  def update_answer
-    if current_user.author_of? @answer
-      @answer.update(answer_params) ? (redirect_to @answer.question) : (render :edit)
-    end
   end
 end

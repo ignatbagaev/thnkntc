@@ -1,5 +1,5 @@
 var id = <%= @answer.id %>
-$('li#answer-' + id).hide();
+$('li#answer-row-' + id).hide();
 
 <% if @answer.accepted? %>
   $('.accept').show();

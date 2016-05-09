@@ -12,16 +12,13 @@ div.col-md-offset-2.col-md-8.col-sm-12
   hr
 div.col-md-offset-2.col-md-8.col-sm-12
   div.answers
-    h5.text-center
-      strong Answers:
-    ul.list-group
-      = render @question.answers
+    = render 'questions/answers'
 div.new-answer-form
   div.col-md-offset-2.col-md-8.col-sm-12
     h6.text-center
       strong Send your answer 
     - if current_user 
-      = form_for([@question, @answer], remote: true) do |f|
+      = form_for([@question, @answer], method: :post, remote: true) do |f|
         div.errors
           = render 'shared/error_messages', object: f.object
         br

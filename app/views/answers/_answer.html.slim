@@ -1,15 +1,22 @@
 - if answer.persisted?
-  li.list-group-item{id="answer-#{answer.id}"}
-    - if answer.accepted?
-      b.accepted Accepted
-    h5= answer.body
-    h6.text-right
-      - if (current_user && current_user.author_of?(@question)) && answer.accepted?
-        = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default accept accept-hidden', id: "accept-#{answer.id}"
-      - elsif (current_user && current_user.author_of?(@question))
-        = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default accept', id: "accept-#{answer.id}" 
+  li.list-group-item{id="answer-row-#{answer.id}"}
+    div{id="answer-#{answer.id}"}
+      - if answer.accepted?
+        b.accepted Accepted
+      h5= answer.body
+      h6.text-right
+        - if (current_user && current_user.author_of?(@question)) && answer.accepted?
+          = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default accept accept-hidden', id: "accept-#{answer.id}"
+        - elsif (current_user && current_user.author_of?(@question))
+          = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default accept', id: "accept-#{answer.id}" 
 
-      - if current_user && current_user.author_of?(answer)
-        = link_to 'Edit answer', edit_answer_path(answer), class: 'btn-sm btn-default'
-        = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'btn-sm btn-default'
+        - if current_user && current_user.author_of?(answer)
+          div.text-left.action-error{id="answer-error-#{answer.id}"}
+          = link_to 'Edit answer', edit_answer_path(answer), class: "btn-sm btn-default edit-answer-link edit-answer-link-#{answer.id}", data: {answer_id: answer.id}
+          = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'btn-sm btn-default'
+    div.answer-error{id="answer-error-#{answer.id}"}
+    div.edit-answer{id="edit-answer-#{answer.id}"}
+      = form_for answer, remote: true do |f|
+        = f.text_area :body, class: 'form-control'
+        = f.submit 'Save', class: 'btn btn-default'
     hr

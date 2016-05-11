@@ -21,9 +21,7 @@ class AnswersController < ApplicationController
   def accept
     question = @answer.question
     if current_user.author_of? question
-      question.answers.each do |answer|
-        answer.update_attribute(:status, 0)
-      end
+      question.answers.update_all(status: 0)
       @answer.update_attribute(:status, 1)
     end
   end

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'best answer', %q{
   In order to tell others about answer solved my question

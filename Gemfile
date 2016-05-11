@@ -44,8 +44,10 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'capybara'
   gem 'launchy'
-  gem 'selenium-webdriver'
+  gem "capybara-webkit", git: "github.com:thoughtbot/capybara-webkit.git"
   gem 'database_cleaner'
+# github.com:thoughtbot/capybara-webkit.git
+
 end
 
 group :development do

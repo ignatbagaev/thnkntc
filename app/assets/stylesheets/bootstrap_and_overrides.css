@@ -46,6 +46,12 @@ h4 > p {
 .edit-answer {
   display: none;
 }
+.edit-question {
+  display: none;
+}
 .answer-error {
+  color: red;
+}
+#question-error {
   color: red;
 }

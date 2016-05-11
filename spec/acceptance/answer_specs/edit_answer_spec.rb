@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'edit own answer', %q{
   In order to get rid of my answer

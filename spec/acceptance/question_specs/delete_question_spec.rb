@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'Authenticated user can delete only own questions and answers' do
   given(:user) { create(:user) }

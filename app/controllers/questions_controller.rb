@@ -5,10 +5,6 @@ class QuestionsController < ApplicationController
     @question = Question.new
   end
 
-  def edit
-    current_user.author_of?(@question) ? (render :edit) : (redirect_to @question)
-  end
-
   def show
     @answer = Answer.new
   end
@@ -23,7 +19,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    update_question or render :edit
+    @question.update(question_params) if current_user.author_of? @question
   end
 
   def destroy
@@ -42,12 +38,6 @@ class QuestionsController < ApplicationController
 
   def save_question
     redirect_to @question, notice: 'Question successfuly created' if @question.save
-  end
-
-  def update_question
-    if current_user.author_of? @question
-      @question.update(question_params) ? (redirect_to @question) : (render :edit)
-    end
   end
 
   def delete_question

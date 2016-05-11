@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'edit own question', %q{
   In orderto fix my question
@@ -8,30 +8,36 @@ feature 'edit own question', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  before(:each) { log_in user }
-  
-  scenario 'link to edit' do
+  before(:each) do
+    log_in user
     visit question_path(question)
     click_link "Edit"
-    expect(current_path).to eq edit_question_path(question)
+  end
+  
+  scenario 'link to edit', js: true do
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_css("form#edit_question_#{question.id}")
   end
 
-  scenario 'with valid attributes' do
-    visit edit_question_path(question)
-    fill_in "Title", with: "Edited title"
-    fill_in "Body", with: "Edited body"
-    click_button "Ask"
+  scenario 'update with valid attributes', js: true  do
+    within"form#edit_question_#{question.id}" do
+      fill_in "Title", with: "Edited title"
+      fill_in "Body", with: "Edited body"
+      click_button "Update"
+    end
     expect(current_path).to eq question_path(question)
     expect(page).to have_content("Edited title")
     expect(page).to have_content("Edited body")
   end
 
-  scenario 'with invalid attributes' do
-    visit edit_question_path(question)
-    fill_in "Title", with: nil
-    fill_in "Body", with: nil
-    click_button "Ask"
-    expect(current_path).to eq edit_question_path(question)
-    expect(page).to have_content 'error'
+  scenario 'update with invalid attributes', js: true  do
+    within"form#edit_question_#{question.id}" do
+      fill_in "Title", with: nil
+      fill_in "Body", with: nil
+      click_button "Update"
+    end
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content 'Title can\'t be blank'
+    expect(page).to have_content 'Body can\'t be blank'
   end
 end

@@ -25,6 +25,7 @@ feature 'create question', %q{
     fill_in "Title", with: nil
     fill_in "Body",  with: nil
     click_on 'Ask'
-    expect(page).to have_content 'error'
+    expect(page).to have_content 'Title can\'t be blank'
+    expect(page).to have_content 'Body can\'t be blank'
   end
 end

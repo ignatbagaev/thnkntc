@@ -21,7 +21,6 @@ feature 'best answer', %q{
   scenario 'question owner accepts the answer', js: true do
     id_1 = question.answers.first.id
     visit question_path(question)
-    # save_and_open_page
     page.find("#accept-#{id_1}").click
     within("#answer-row-#{id_1}") do
       expect(page).to_not have_button("Accept")

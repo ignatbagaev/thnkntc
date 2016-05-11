@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = Answer.new
+    @answer = @question.answers.new
   end
 
   def index
@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.create(question_params.merge(user: current_user))
-    save_question or render 'new'
+    save_question || render('new')
   end
 
   def update
@@ -23,7 +23,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    delete_question or redirect_to @question
+    delete_question || redirect_to(@question)
   end
 
   private
@@ -41,8 +41,7 @@ class QuestionsController < ApplicationController
   end
 
   def delete_question
-    if current_user.author_of? @question
-      @question.destroy and redirect_to questions_path
-    end
+    return unless current_user.author_of? @question
+    @question.destroy && redirect_to(questions_path)
   end
 end

@@ -1,0 +1,21 @@
+AllCops: 
+  Include:
+    - 'app/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+  Exclude:
+    - 'config/**/*.rb'
+    - 'vendor/**/*'
+    - 'spec/**/*'
+    - 'db/**/*.rb'
+    - 'bin/**/*'
+
+Metrics/LineLength:
+  Max: 100
+
+Style/Documentation:
+  Enabled: false
+  
+Style/PredicateName:
+  Enabled: false
+

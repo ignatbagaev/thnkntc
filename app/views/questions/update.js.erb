@@ -1,7 +1,7 @@
 <% if @question.errors.present? %>
-    $('div#question-error').html('');
+    $('div.question-error').html('');
   <% @question.errors.full_messages.each do |message| %>
-    $('div#question-error').append('<p><%= j message %><p>');
+    $('div.question-error').append('<p><%= j message %><p>');
   <% end %>
 <% else %>
   $('.question-item').html( '<%= j render 'question' %>');

@@ -1,2 +1,8 @@
-$('ul.list-group').append("<%= j render @answer %>")
-$('#answer_body').val('')
+<% if @answer.errors.present? %>
+  <% @answer.errors.full_messages.each do |message| %>
+    $('div.errors').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('textarea#answer_body').val('')
+  $('ul.list-group').append("<%= j render @answer %>")
+<% end %>

@@ -1,7 +1,5 @@
 class Answer < ActiveRecord::Base
-  default_scope { order(status: :desc) }
-
-  enum status: { common: 0, accepted: 1 }
+  default_scope { order(accepted: :desc) }
 
   belongs_to :question
   belongs_to :user

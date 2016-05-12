@@ -117,7 +117,7 @@ RSpec.describe AnswersController, type: :controller do
       @user.questions << question
       post :accept, id: answer, format: :js
       answer.reload
-      expect(answer.status).to eq "accepted"
+      expect(answer).to be_accepted
     end
 
     let(:accepted_answer) { create(:accepted_answer)}
@@ -126,7 +126,7 @@ RSpec.describe AnswersController, type: :controller do
       question.answers << accepted_answer
       post :accept, id: answer, format: :js
       answer.reload
-      expect(answer.status).to eq "accepted"
+      expect(answer).to be_accepted
     end
 
     it 'changes previous accepted answer to common if user accepts another answer' do
@@ -134,14 +134,14 @@ RSpec.describe AnswersController, type: :controller do
       question.answers << accepted_answer
       post :accept, id: answer, format: :js
       accepted_answer.reload
-      expect(accepted_answer.status).to eq "common"
+      expect(accepted_answer).to_not be_accepted
     end
 
     it 'could not mark as accepted an answer of another\'s question' do
       question.answers << accepted_answer
       post :accept, id: answer, format: :js
       answer.reload
-      expect(answer.status).to eq "common"
+      expect(answer).to_not be_accepted
     end
   end
 end

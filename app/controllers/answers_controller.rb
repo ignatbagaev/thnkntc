@@ -27,7 +27,11 @@ class AnswersController < ApplicationController
 
   def accept
     question = @answer.question
-    @answer.accept! if current_user.author_of? question
+    if current_user.author_of? question
+      @answer.accept!
+    else
+      render nothing: true, status: 401
+    end
   end
 
   private

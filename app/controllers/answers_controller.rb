@@ -1,36 +1,27 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_question, only: :create
   before_action :load_answer, except: :create
   def create
+    @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(user: current_user))
     @answer.save
   end
 
   def update
-    @question = @answer.question
-    if current_user.author_of? @answer
+    check_owner(@answer) do 
       @answer.update(answer_params)
-    else
-      render nothing: true, status: 401
     end
   end
 
   def destroy
-    @question = @answer.question
-    if current_user.author_of?(@answer)
+    check_owner(@answer) do 
       @answer.destroy
-    else
-      render nothing: true, status: 401
     end
   end
 
   def accept
-    question = @answer.question
-    if current_user.author_of? question
+    check_owner(@answer.question) do
       @answer.accept!
-    else
-      render nothing: true, status: 401
     end
   end
 
@@ -40,8 +31,12 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body)
   end
 
-  def load_question
-    @question = Question.find(params[:question_id])
+  def check_owner(object, &block)
+    if current_user.author_of? object
+      yield if block_given?
+    else
+      render nothing: true, status: 401
+    end
   end
 
   def load_answer

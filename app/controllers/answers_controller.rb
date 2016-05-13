@@ -8,14 +8,21 @@ class AnswersController < ApplicationController
   end
 
   def update
+    @question = @answer.question
     if current_user.author_of? @answer
-      @question = @answer.question
       @answer.update(answer_params)
+    else
+      render nothing: true, status: 401
     end
   end
 
   def destroy
-    @answer.destroy if current_user.author_of?(@answer)
+    @question = @answer.question
+    if current_user.author_of?(@answer)
+      @answer.destroy
+    else
+      render nothing: true, status: 401
+    end
   end
 
   def accept

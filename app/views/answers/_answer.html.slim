@@ -2,13 +2,13 @@
   li.list-group-item id="answer-row-#{answer.id}"
     div id="answer-#{answer.id}" 
       - if answer.accepted?
-        b Accepted
+        b Best answer
       h5= answer.body
       h6.text-right
         - if (current_user && current_user.author_of?(@question)) && answer.accepted?
-          = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden', id: "accept-#{answer.id}"
+          = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden', id: "accept-#{answer.id}"
         - elsif (current_user && current_user.author_of?(@question))
-          = button_to "Accept", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}" 
+          = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}" 
 
         - if current_user && current_user.author_of?(answer)
           div.text-left.action-error id="answer-error-#{answer.id}" 

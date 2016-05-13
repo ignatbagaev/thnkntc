@@ -13,19 +13,24 @@ RSpec.describe Answer, type: :model do
   let(:accepted_answer) { create(:accepted_answer, question: question) }
   let(:answer2) { create :answer }
 
-  it "shows the accepted answer at the top of the list" do
-    expect(accepted_answer).to eq Answer.first
+  describe '.default_scope' do
+    it "shows the accepted answer at the top of the list" do
+      expect(accepted_answer).to eq Answer.first
+    end
   end
 
-  it 'accepts answer' do
-    expect {
-      answer.accept!
-    }.to change { answer.accepted }.from(false).to(true)
-  end
 
-  it 'rejects previous accepted answer' do
-    expect {
-      answer.accept!
-    }.to change { accepted_answer.reload.accepted }.from(true).to(false)
+  describe '#accept!' do
+    it 'accepts answer' do
+      expect {
+        answer.accept!
+      }.to change { answer.accepted }.from(false).to(true)
+    end
+
+    it 'rejects previous accepted answer' do
+      expect {
+        answer.accept!
+      }.to change { accepted_answer.reload.accepted }.from(true).to(false)
+    end
   end
 end

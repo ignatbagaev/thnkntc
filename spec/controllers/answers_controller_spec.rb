@@ -54,7 +54,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(assigns(:answer)).to eq answer
       end
       
-      it "does not update update anybody's answer" do
+      it "does not update anybody's answer" do
         patch :update, id: answer, answer: { body: "Edited body" }, format: :js
         answer.reload
         expect(answer.body).to_not eq "Edited body"

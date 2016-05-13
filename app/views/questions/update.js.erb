@@ -5,9 +5,4 @@
   <% end %>
 <% else %>
   $('.question-item').html( '<%= j render 'question' %>');
-  $('.edit-question-link').click(function(e) {
-    e.preventDefault();
-    $('div.question').hide();
-    $('div.edit-question').show();
-  });
 <% end %>

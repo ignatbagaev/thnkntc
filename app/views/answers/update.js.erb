@@ -4,11 +4,5 @@ var id = <%= @answer.id %>
     $('div#answer-error-' + id).html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render 'questions/answers' %>');
-  $('.edit-answer-link').click(function(e) {
-    e.preventDefault();
-    answer_id = $(this).data('answerId');
-    $('div#answer-' + answer_id).hide();
-    $('div#edit-answer-' + answer_id).show();
-  });
+  $('#answer-row-' + id).html('<%= j render @answer %>');
 <% end %>

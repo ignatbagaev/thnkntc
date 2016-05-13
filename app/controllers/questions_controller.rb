@@ -19,7 +19,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.author_of? @question
+    if current_user.author_of? @question
+      @question.update(question_params) 
+    else
+      render nothing: true, status: 401
+    end
   end
 
   def destroy

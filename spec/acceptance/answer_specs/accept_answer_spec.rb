@@ -14,7 +14,7 @@ feature 'best answer', %q{
   scenario 'user could accept answer of question' do
     visit question_path(question)
     answers.each do |answer|
-      expect(page).to have_button("Accept")
+      expect(page).to have_button("Best")
     end
   end
 
@@ -23,15 +23,15 @@ feature 'best answer', %q{
     visit question_path(question)
     page.find("#accept-#{id_1}").click
     within("#answer-row-#{id_1}") do
-      expect(page).to_not have_button("Accept")
-      expect(page).to have_content("Accepted")
+      expect(page).to_not have_button("Best")
+      expect(page).to have_content("Best answer")
     end
   end
 
   scenario 'user could not accept answer of another\'s question' do
     user2.questions << question
     visit question_path(question)
-    expect(page).to_not have_button("Accept")
+    expect(page).to_not have_button("Best")
   end
 
   scenario 'question owner could change accepted answer', js: true do
@@ -41,8 +41,8 @@ feature 'best answer', %q{
     page.find("#accept-#{id_1}").click
     page.find("#accept-#{id_2}").click
     within("#answer-row-#{id_2}") do
-      expect(page).to_not have_button("Accept")
-      expect(page).to have_content("Accepted")
+      expect(page).to_not have_button("Best")
+      expect(page).to have_content("Best answer")
     end
   end
 
@@ -53,7 +53,7 @@ feature 'best answer', %q{
     page.find("#accept-#{id_1}").click
     page.find("#accept-#{id_2}").click
     within('.list-group-item:first-child') do
-      expect(page).to have_content("Accepted")
+      expect(page).to have_content("Best answer")
     end
   end
 end

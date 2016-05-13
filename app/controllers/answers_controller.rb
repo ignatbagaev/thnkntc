@@ -20,10 +20,7 @@ class AnswersController < ApplicationController
 
   def accept
     question = @answer.question
-    if current_user.author_of? question
-      question.answers.update_all(accepted: false)
-      @answer.update_attribute(:accepted, true)
-    end
+    @answer.accept! if current_user.author_of? question
   end
 
   private

@@ -5,6 +5,6 @@ class Question < ActiveRecord::Base
   validates :title, :body, :user_id, presence: true
 
   def has_accepted_answer?
-    answers.pluck(:accepted).include? true
+    answers.where(accepted: true).exists?
   end
 end

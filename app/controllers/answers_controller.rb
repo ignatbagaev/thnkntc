@@ -8,21 +8,15 @@ class AnswersController < ApplicationController
   end
 
   def update
-    check_owner(@answer) do 
-      @answer.update(answer_params)
-    end
+    check_owner(@answer) { @answer.update(answer_params) }
   end
 
   def destroy
-    check_owner(@answer) do 
-      @answer.destroy
-    end
+    check_owner(@answer) { @answer.destroy }
   end
 
   def accept
-    check_owner(@answer.question) do
-      @answer.accept!
-    end
+    check_owner(@answer.question) { @answer.accept! }
   end
 
   private
@@ -31,11 +25,11 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body)
   end
 
-  def check_owner(object, &block)
+  def check_owner(object)
     if current_user.author_of? object
       yield if block_given?
     else
-      render nothing: true, status: 401
+      render head: 403
     end
   end
 

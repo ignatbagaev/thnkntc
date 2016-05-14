@@ -5,10 +5,16 @@
         b Best answer
       h5= answer.body
       h6.text-right
-        - if (current_user && current_user.author_of?(answer.question)) && answer.accepted?
-          = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden', id: "accept-#{answer.id}"
+        / #TODO: find the way to refactor accept buttons
+        - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?
+
+          - if answer.accepted?
+            = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden', id: "accept-#{answer.id}"
+          -else 
+            = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}"
+
         - elsif (current_user && current_user.author_of?(answer.question))
-          = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}" 
+          = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}"
 
         - if current_user && current_user.author_of?(answer)
           div.text-left.action-error id="answer-error-#{answer.id}" 

@@ -1,6 +1,7 @@
 var id = <%= @answer.id %>
 $('b').remove();
 $('<b> Best answer <b>').prependTo( $('div#answer-' + id) );
+$('.button-accept').val('Better'); 
 $('.button-accept').show(); 
 $('li#answer-row-' + id).prependTo('ul.list-group');
 $('#accept-' + id).hide();

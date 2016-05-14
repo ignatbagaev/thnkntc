@@ -1,2 +1,6 @@
 var id = <%= @answer.id %>
 $('li#answer-row-' + id).hide();
+
+<% if @answer.accepted? %>
+  $('.button-accept').val('Best'); 
+<% end %>

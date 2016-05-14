@@ -11,13 +11,14 @@ RSpec.describe User, type: :model do
   let(:user) { create :user }
   let(:question) { create :question, user: user }
   let(:user2) { create :user }
-
-  it 'returns true when object is associated with user' do
-    expect(user).to be_author_of question
-  end
-  
-  it 'returns false when object is not associated with user' do
-    user2.questions << question
-    expect(user).to_not be_author_of question
+  describe '#author_of?' do
+    it 'returns true when object is associated with user' do
+      expect(user).to be_author_of question
+    end
+    
+    it 'returns false when object is not associated with user' do
+      user2.questions << question
+      expect(user).to_not be_author_of question
+    end
   end
 end

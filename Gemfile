@@ -29,6 +29,7 @@ gem 'devise'
 gem 'html2slim'
 gem 'faker'
 gem 'rubocop', '~> 0.40.0', require: false
+gem 'carrierwave'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

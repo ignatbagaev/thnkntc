@@ -4,6 +4,12 @@
       - if answer.accepted?
         b Best answer
       h5= answer.body
+      - if answer.attachments.exists?
+        p
+          b Attachments:
+        ul
+          - answer.attachments.each do |attachment|
+            li= link_to attachment.file.filename, attachment.file.url, target: '_blank'
       h6.text-right
         / #TODO: find the way to refactor accept buttons
         - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?

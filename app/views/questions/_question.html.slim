@@ -2,10 +2,11 @@ div.question
   h4 = @question.title
   h4= simple_format @question.body
   - if @question.attachments.exists?
-    p Attachments:
+    p
+      b Attachments:
     ul
       - @question.attachments.each do |attachment|
-        li= link_to attachment.file.file.filename, attachment.file.url
+        li= link_to attachment.file.filename, attachment.file.url, target: '_blank'  
   div.actions
     div.pull-left
       = link_to 'Back', questions_path, class: 'btn btn-default pull-right'

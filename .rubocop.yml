@@ -9,7 +9,7 @@ AllCops:
     - 'spec/**/*'
     - 'db/**/*.rb'
     - 'bin/**/*'
-    - 'public/uploads/*'
+    - 'public/uploads/**/*'
 
 Metrics/LineLength:
   Max: 100

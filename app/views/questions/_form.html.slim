@@ -1,5 +1,5 @@
 div.col-md-offset-2.col-md-8.col-sm-12
-  = form_for @question do |f|
+  = nested_form_for @question do |f|
     = render 'shared/error_messages', object: f.object
     div.field
       = f.label :title
@@ -14,6 +14,7 @@ div.col-md-offset-2.col-md-8.col-sm-12
       div.field
         = a.label :file
         = a.file_field :file, class: 'form-control'
+    = f.link_to_add "One more file", :attachments
     br
     div.actions
       div.pull-left

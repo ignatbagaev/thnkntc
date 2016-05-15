@@ -5,7 +5,7 @@ class Question < ActiveRecord::Base
 
   validates :title, :body, :user_id, presence: true
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, allow_destroy: true
 
   def has_accepted_answer?
     answers.where(accepted: true).exists?

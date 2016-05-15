@@ -22,7 +22,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, attachments_attributes: [:file])
+    params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
   end
 
   def check_owner(object)

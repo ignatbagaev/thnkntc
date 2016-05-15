@@ -16,7 +16,7 @@ div.question
         = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default'
 div.edit-question
   div.question-error
-  = form_for @question, remote: true do |f|
+  = nested_form_for @question, remote: true do |f|
     = render 'shared/error_messages', object: f.object
     div.field
       = f.label :title
@@ -25,6 +25,12 @@ div.edit-question
       = f.label :body
       = f.text_area :body, rows: '5', class: 'form-control'
       br
+      = f.fields_for :attachments do |a|
+        - if a.object.persisted?
+          p= a.object.file.filename
+          p= a.link_to_remove "Remove this file"
+        - else 
+          = a.file_field :file, class: 'form-control'
     div.actions
       div.pull-right
         = f.submit 'Update',class: 'btn btn-default'

@@ -4,7 +4,7 @@ feature 'add attachment to question' do
   
   given(:user) { create :user }
 
-  scenario 'add attachment to question while create question' do
+  scenario 'while create question' do
     log_in user
     visit new_question_path
     fill_in 'Title', with: "Question title"

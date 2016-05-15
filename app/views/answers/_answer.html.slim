@@ -29,7 +29,13 @@
 
     div.errors id="answer-error-#{answer.id}"
     div.edit-answer id="edit-answer-#{answer.id}"
-      = form_for answer, remote: true do |f|
+      = nested_form_for answer, remote: true do |f|
         = f.text_area :body, class: 'form-control'
+        = f.fields_for :attachments do |a|
+          - if a.object.persisted?
+            p= a.object.file.filename
+            p= a.link_to_remove "Remove this file"
+          - else 
+            = a.file_field :file, class: 'form-control'
         = f.submit 'Save', class: 'btn btn-default'
     hr

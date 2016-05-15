@@ -5,7 +5,7 @@ feature 'add attachment to answer' do
   given(:user) { create :user }
   given(:question) { create :question }
 
-  scenario 'add attachment to answer while create answer', js: true do
+  scenario 'while create answer', js: true do
     log_in user
     visit question_path(question)
     within('div.new-answer-form') do

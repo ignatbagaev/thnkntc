@@ -1,4 +1,4 @@
-- if answer.persisted?
+- if answer && answer.question && answer.persisted?
   li.list-group-item id="answer-row-#{answer.id}"
     div id="answer-#{answer.id}" 
       - if answer.accepted?
@@ -22,14 +22,14 @@
         - elsif (current_user && current_user.author_of?(answer.question))
           = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}"
 
-        - if current_user && current_user.author_of?(answer)
-          div.text-left.action-error id="answer-error-#{answer.id}" 
+        - if current_user && current_user.author_of?(answer) 
           = link_to 'Edit answer', edit_answer_path(answer), class: "btn-sm btn-default edit-answer-link edit-answer-link-#{answer.id}", data: {answer_id: answer.id}
           = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'btn-sm btn-default'
 
     div.errors id="answer-error-#{answer.id}"
     div.edit-answer id="edit-answer-#{answer.id}"
       = nested_form_for answer, remote: true do |f|
+        = f.label :body
         = f.text_area :body, class: 'form-control'
         = f.fields_for :attachments do |a|
           - if a.object.persisted?

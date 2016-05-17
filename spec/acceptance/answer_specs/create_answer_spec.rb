@@ -17,7 +17,7 @@ feature 'create answers', %q{
   scenario 'with valid attributes if user logged in', js: true do
     log_in user
     visit question_path(question)
-    fill_in "Body", with: "Some long text"
+    fill_in :new_answer_body, with: "Some long text"
     click_on "Send"
 
     expect(page).to have_content("Some long text")
@@ -27,7 +27,7 @@ feature 'create answers', %q{
   scenario 'with invalid attributes', js: true do
     log_in user
     visit question_path(question)
-    fill_in "Body", with: nil
+    fill_in :new_answer_body, with: nil
     click_on "Send"
     expect(current_path).to eq question_path(question)
   end

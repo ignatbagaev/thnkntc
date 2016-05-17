@@ -16,16 +16,12 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.create(question_params.merge(user: current_user))
+    @question = Question.new(question_params.merge(user: current_user))
     save_question || render('new')
   end
 
   def update
-    if current_user.author_of? @question
-      @question.update(question_params)
-    else
-      render head: 403
-    end
+    update_question || render(head: 403)
   end
 
   def destroy
@@ -44,6 +40,12 @@ class QuestionsController < ApplicationController
 
   def save_question
     redirect_to @question, notice: 'Question successfuly created' if @question.save
+  end
+
+  def update_question
+    if current_user.author_of? @question
+      @question.update(question_params)
+    end
   end
 
   def delete_question

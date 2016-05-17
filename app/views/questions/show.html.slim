@@ -1,24 +1,23 @@
 div.col-md-offset-2.col-md-8.col-sm-12
   div.question-item
     = render @question
-div.col-md-offset-2.col-md-8.col-sm-12
   div.answers
     = render 'questions/answers'
-div.new-answer-form
-  div.col-md-offset-2.col-md-8.col-sm-12
+  div.new-answer-form
     h6.text-center
       strong Send your answer 
     - if current_user 
-      = nested_form_for([@question, @answer], method: :post, remote: true) do |f|
-        div.errors
+      = nested_form_for([@question, @answer], remote: true) do |f|
+        div#new_answer_error
         br
         = f.label :body
-        = f.text_area :body, rows: '5', class: 'form-control'
+        = f.text_area :body, rows: '5', class: 'form-control', id: 'new_answer_body'
         br
-        = f.fields_for :attachments do |a|
-          = a.label :file
-          = a.file_field :file, class: 'form-control'
-        = f.link_to_add "One more file", :attachments
+        div.answer-attachments
+          = f.fields_for :attachments do |a|
+            = a.label :file
+            = a.file_field :file, class: 'form-control'
+          = f.link_to_add "One more file", :attachments
         = f.submit 'Send answer', class: 'btn btn-default pull-right'
     - else
       h5.text-center

@@ -10,11 +10,12 @@ div.col-md-offset-2.col-md-8.col-sm-12
       br
     p
       b Attachments:
-    = f.fields_for :attachments do |a|
-      div.field
-        = a.label :file
-        = a.file_field :file, class: 'form-control'
-    = f.link_to_add "One more file", :attachments
+    div.attachments  
+      = f.fields_for :attachments do |a|
+        div.field
+          = a.label :file
+          = a.file_field :file, class: 'form-control'
+      = f.link_to_add "One more file", :attachments
     br
     div.actions
       div.pull-left

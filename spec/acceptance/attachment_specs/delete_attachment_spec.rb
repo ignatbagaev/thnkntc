@@ -1,31 +1,60 @@
 require_relative '../acceptance_helper'
 
-feature 'delete attachment while update question or answer' do
+feature 'delete attachment' do
 
   given(:user) { create :user }
+  given(:user2) { create :user }
   given(:question) { create(:question, user: user) }
   given(:answer) { create(:answer, user: user, question: question) }
-  given(:attachment1) { create(:attachment, attachable: question) }
-  given(:attachment2) { create(:attachment, attachable: answer) }
+  given(:question_attachment) { create(:attachment) }
+  given(:answer_attachment) { create(:attachment) }
 
-  
+  before do
+    question.attachments << question_attachment
+    answer.attachments << answer_attachment
+  end
+
+  scenario 'guest could not delete any file' do
+    visit question_path(question)
+    expect(page).to_not have_link("Delete file")
+  end
   scenario 'user could delete own question attachment', js: true do
     log_in user
-    filename = attachment1.file.filename
     visit question_path(question)
-    click_link("Edit question")
-    click_link("Remove this file")
-    click_button("Update")
-    expect(page).to_not have_link(filename)
+
+    within('div.question') do
+      click_link("Delete file")
+      expect(page).to_not have_link(question_attachment.file.filename)
+    end
+  end  
+
+  scenario 'user could not delete another\'s question attachment' do
+    log_in user2
+    visit question_path(question)
+
+    within('div.question') do
+      expect(page).to have_content(question_attachment.file.filename)
+      expect(page).to_not have_link("Delete file")
+    end
   end
 
   scenario 'user could delete own answer attachment', js: true do
     log_in user
-    filename = attachment2.file.filename
     visit question_path(question)
-    click_link("Edit answer")
-    click_link("Remove this file")
-    click_button "Save"
-    expect(page).to_not have_link(filename)
+
+    within("div#answer-#{answer.id}") do
+      click_link("Delete file")
+      expect(page).to_not have_link(answer_attachment.file.filename)
+    end
+  end
+
+  scenario 'user could not delete another\'s answer attachment' do
+    log_in user2
+    visit question_path(question)
+
+    within("div#answer-#{answer.id}") do
+      expect(page).to have_content(answer_attachment.file.filename)
+      expect(page).to_not have_link("Delete file")
+    end
   end
 end

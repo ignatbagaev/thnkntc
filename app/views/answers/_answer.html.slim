@@ -9,7 +9,11 @@
           b Attachments:
         ul
           - answer.attachments.each do |attachment|
-            li= link_to attachment.file.filename, attachment.file.url, target: '_blank'
+            li id="attachment_#{attachment.id}"
+              = link_to attachment.file.filename, attachment.file.url, target: '_blank'
+              -if current_user && current_user.author_of?(attachment.attachable)
+                = link_to "Delete file", attachment_path(attachment), method: :delete, remote: true, id: "delete_attachment_#{attachment.id}"
+
       h6.text-right
         / #TODO: find the way to refactor accept buttons
         - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?
@@ -31,11 +35,5 @@
       = nested_form_for answer, remote: true do |f|
         = f.label :body
         = f.text_area :body, class: 'form-control'
-        = f.fields_for :attachments do |a|
-          - if a.object.persisted?
-            p= a.object.file.filename
-            p= a.link_to_remove "Remove this file"
-          - else 
-            = a.file_field :file, class: 'form-control'
         = f.submit 'Save', class: 'btn btn-default'
     hr

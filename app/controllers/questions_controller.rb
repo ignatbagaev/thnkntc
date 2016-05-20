@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :index]
-  before_action :load_question, only: [:edit, :show, :update, :destroy]
+  before_action :load_question, only: [:edit, :show, :update, :destroy, :upvote, :downvote, :unvote]
   def new
     @question = Question.new
     @question.attachments.build
@@ -26,6 +26,35 @@ class QuestionsController < ApplicationController
 
   def destroy
     delete_question || redirect_to(@question)
+  end
+
+  def upvote
+    @vote = @question.votes.create(positive: true, user_id: current_user.id)
+      respond_to do |format|
+      if @vote.save
+        format.json { render json: @question.rating }
+      else
+        format.json { render json: @vote.errors, status: 422 }
+      end
+    end
+  end
+
+  def downvote
+    @vote = @question.votes.new(positive: false, user_id: current_user.id)
+    respond_to do |format|
+      if @vote.save
+        format.json { render json: @question.rating }
+      else
+        format.json { render json: @vote.errors, status: 422 }
+      end
+    end
+  end
+
+  def unvote
+    @question.votes.find_by(user_id: current_user.id).destroy
+    respond_to do |format|
+      format.json { render json: @question.rating }
+    end
   end
 
   private

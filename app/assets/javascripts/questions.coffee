@@ -8,6 +8,11 @@ ready = ->
     $('div.question').hide();
     $('div.edit-question').show()
 
+  $('.vote_question').bind 'ajax:success', (e, data, status, xhr) ->
+    $('p.question-rating').html(data);
+  .bind "ajax:error", (e, xhr, status, error) ->
+    console.log("Error");
+
 $(document).ready(ready);
 $(document).on('page:load', ready);
 $(document).on('page:update', ready);

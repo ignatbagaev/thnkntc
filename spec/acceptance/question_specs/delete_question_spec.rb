@@ -4,11 +4,10 @@ feature 'Authenticated user can delete only own questions and answers' do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
 
-
   given(:question) { create(:question) }
   given(:answer) { create(:answer, question: question) }
 
-  scenario 'Delete own question' do
+  scenario 'delete own question' do
     user.questions << question
     log_in user
     visit question_path(question)
@@ -17,11 +16,10 @@ feature 'Authenticated user can delete only own questions and answers' do
     expect(page).to_not have_content question.title
   end
 
-  scenario 'Delete someone question' do
+  scenario 'delete anothers question' do
     user2.questions << question
     log_in user
     visit question_path(question)
     expect(page).to_not have_content 'Delete question'
   end
-
 end

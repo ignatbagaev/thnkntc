@@ -1,7 +1,7 @@
 class Answer < ActiveRecord::Base
   include Attachable
   include Votable
-  
+
   default_scope { order(accepted: :desc) }
 
   belongs_to :question

@@ -30,6 +30,7 @@ class QuestionsController < ApplicationController
   def destroy
     check_author(@question) { @question.destroy && redirect_to(questions_path) }
   end
+
   private
 
   def question_params

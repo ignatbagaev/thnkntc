@@ -7,11 +7,11 @@ RSpec.describe AttachmentsController, type: :controller do
   let(:attachment) { create :attachment }
 
   describe 'DELETE #destroy' do
-
     context 'unless logged in' do
-      before { question.attachments << attachment}
+      before { question.attachments << attachment }
       it 'does not deletes attachment' do
-        expect { delete :destroy, id: attachment.id, format: :js }.to_not change(Attachment, :count)
+        expect { delete :destroy, id: attachment.id, format: :js }
+          .to_not change(Attachment, :count)
       end
     end
 
@@ -23,7 +23,8 @@ RSpec.describe AttachmentsController, type: :controller do
         question.attachments << attachment
       end
       it 'deletes' do
-        expect { delete :destroy, id: attachment.id, format: :js }.to change(question.attachments, :count).by(-1)
+        expect { delete :destroy, id: attachment.id, format: :js }
+          .to change(question.attachments, :count).by(-1)
       end
     end
 
@@ -33,7 +34,8 @@ RSpec.describe AttachmentsController, type: :controller do
         answer.attachments << attachment
       end
       it 'deletes' do
-        expect { delete :destroy, id: attachment.id, format: :js }.to change(answer.attachments, :count).by(-1)
+        expect { delete :destroy, id: attachment.id, format: :js }
+          .to change(answer.attachments, :count).by(-1)
       end
     end
 
@@ -43,7 +45,8 @@ RSpec.describe AttachmentsController, type: :controller do
         question.attachments << attachment
       end
       it 'does not delete' do
-        expect { delete :destroy, id: attachment.id, format: :js }.to_not change(Attachment, :count)
+        expect { delete :destroy, id: attachment.id, format: :js }
+          .to_not change(Attachment, :count)
       end
     end
 
@@ -53,10 +56,9 @@ RSpec.describe AttachmentsController, type: :controller do
         answer.attachments << attachment
       end
       it 'does not delete' do
-        expect { delete :destroy, id: attachment.id, format: :js }.to_not change(Attachment, :count)
+        expect { delete :destroy, id: attachment.id, format: :js }
+          .to_not change(Attachment, :count)
       end
     end
-
   end
-
 end

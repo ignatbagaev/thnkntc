@@ -1,11 +1,10 @@
 require_relative '../acceptance_helper'
 
-feature 'User could see list of questions', %q{
+feature 'User could see list of questions', '
   In order to be able to find some question
   As user
   I want to have access to listing of all questions
-} do
-
+' do
   context 'when user is not authorized' do
     scenario 'page has not links to new question path' do
       visit questions_path
@@ -38,14 +37,13 @@ feature 'User could see list of questions', %q{
   end
 end
 
-feature 'User could visit the show page of question', %q{
+feature 'User could visit the show page of question', "
   In order to see full body of a question
   As user
   I want to have access to question's show page
-} do
-
+" do
   given!(:question) { create :question }
-  
+
   scenario 'users visits show page of certain question' do
     visit question_path(question)
     expect(page).to have_content(question.title)
@@ -54,7 +52,7 @@ feature 'User could visit the show page of question', %q{
   end
 
   given!(:answers) { create_list(:answer, 5, question: question) }
-  
+
   scenario 'user could see the list of answers associated with question' do
     visit question_path(question)
     answers.each do |answer|
@@ -62,5 +60,3 @@ feature 'User could visit the show page of question', %q{
     end
   end
 end
-
-

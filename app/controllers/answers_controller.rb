@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
   include Authored
   before_action :authenticate_user!
   before_action :load_answer, only: [:update, :destroy, :accept]
- 
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(user: current_user))

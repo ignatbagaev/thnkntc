@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     let(:question) { create(:question) }
-    before { get :show, id: question}
-    
+    before { get :show, id: question }
+
     it 'assigns the reqested question to @question' do
       expect(assigns(:question)).to eq question
     end
@@ -16,23 +16,22 @@ RSpec.describe QuestionsController, type: :controller do
     it 'builds new attachment for answer' do
       expect(assigns(:answer).attachments.first).to be_a_new Attachment
     end
-    
+
     it 'renders show view' do
       expect(response).to render_template :show
     end
   end
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 5)}
+    let(:questions) { create_list(:question, 5) }
     before { get :index }
     it 'assigns all questions to @questions' do
-      expect(assigns(:questions)).to eq (questions)
+      expect(assigns(:questions)).to eq questions
     end
   end
 
   describe 'GET #new' do
-
-    context 'when user is not logged in' do 
+    context 'when user is not logged in' do
       it 'redirects to login page' do
         get :new
         expect(response).to redirect_to new_user_session_path
@@ -46,7 +45,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'assigns new question to @question' do
         expect(assigns(:question)).to be_a_new Question
       end
-      
+
       it 'builds new attachment for question' do
         expect(assigns(:question).attachments.first).to be_a_new Attachment
       end
@@ -64,7 +63,6 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-
     context 'with valid attributes when user logged in' do
       login_user
       it 'assciates new question with user and saves it to database' do
@@ -75,7 +73,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
-    
+
     context 'with invalid attributes when user logged in' do
       login_user
       it 'does not save question to database' do
@@ -92,10 +90,10 @@ RSpec.describe QuestionsController, type: :controller do
     let(:question) { create :question }
     context 'user is not logged in' do
       it 'does not update the question' do
-        patch :update, id: question, question: { title: "Edited title", body: "Edited body" }, format: :js
+        patch :update, id: question, question: { title: 'Edited title', body: 'Edited body' }, format: :js
         question.reload
-        expect(question.title).to_not eq "Edited title"
-        expect(question.body).to_not eq "Edited body"
+        expect(question.title).to_not eq 'Edited title'
+        expect(question.body).to_not eq 'Edited body'
       end
     end
     context 'user is logged in' do
@@ -104,21 +102,21 @@ RSpec.describe QuestionsController, type: :controller do
         patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
-      
+
       it "does not update update anybody's question" do
-        patch :update, id: question, question: { title: "Edited title", body: "Edited body" }, format: :js
+        patch :update, id: question, question: { title: 'Edited title', body: 'Edited body' }, format: :js
         question.reload
-        expect(question.title).to_not eq "Edited title"
-        expect(question.body).to_not eq "Edited body"
+        expect(question.title).to_not eq 'Edited title'
+        expect(question.body).to_not eq 'Edited body'
       end
 
       context 'user owns the question' do
         it 'upates question with valid attributes if user owns the question' do
           @user.questions << question
-          patch :update, id: question, question: { title: "Edited title", body: "Edited body" }, format: :js
+          patch :update, id: question, question: { title: 'Edited title', body: 'Edited body' }, format: :js
           question.reload
-          expect(question.title).to eq "Edited title"
-          expect(question.body).to eq "Edited body"
+          expect(question.title).to eq 'Edited title'
+          expect(question.body).to eq 'Edited body'
         end
 
         it 'does not update question with invalid attributes' do
@@ -131,7 +129,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
-  
+
   describe 'DELETE #destroy' do
     context 'if user not logged in' do
       let(:user) { create :user }
@@ -139,14 +137,14 @@ RSpec.describe QuestionsController, type: :controller do
       before { user.questions << question }
       it 'does not delete question' do
         expect { delete :destroy, id: question.id }.to_not change(Question, :count)
-      end        
+      end
     end
 
     context 'if user logged in' do
       login_user
       let(:user) { create :user }
       let(:question) { create :question }
-      before { @user.questions << question}
+      before { @user.questions << question }
 
       context 'own question' do
         it 'deletes question' do
@@ -162,7 +160,7 @@ RSpec.describe QuestionsController, type: :controller do
         before { user.questions << question }
         it 'does not delete question' do
           expect { delete :destroy, id: question.id }.to_not change(Question, :count)
-        end          
+        end
         it 'redirects to questions list' do
           delete :destroy, id: question.id
           expect(response).to redirect_to question_path(question)
@@ -186,7 +184,7 @@ RSpec.describe QuestionsController, type: :controller do
         post :upvote, id: question.id, format: :json
         expect(question.rating).to eq 'rating: 1'
       end
-    end 
+    end
   end
 
   describe 'POST #downvote' do
@@ -204,7 +202,7 @@ RSpec.describe QuestionsController, type: :controller do
         post :downvote, id: question.id, format: :json
         expect(question.rating).to eq 'rating: -1'
       end
-    end 
+    end
   end
 
   describe 'DELETE #unvote' do
@@ -217,6 +215,6 @@ RSpec.describe QuestionsController, type: :controller do
       puts @user.votes.first == question.votes.first
       delete :unvote, id: question.id, format: :json
       expect(question.votes.find_by(user_id: @user)).to eq nil
-    end 
+    end
   end
 end

@@ -7,5 +7,5 @@ FactoryGirl.define do
   factory :another_user, class: 'User' do
     email { Faker::Internet.email }
     password '12345678'
-  end  
+  end
 end

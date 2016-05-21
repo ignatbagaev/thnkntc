@@ -3,16 +3,16 @@ AllCops:
     - 'app/**/*.rb'
     - 'lib/**/*.rb'
     - 'lib/**/*.rake'
+    - 'spec/**/*'
   Exclude:
     - 'config/**/*.rb'
     - 'vendor/**/*'
-    - 'spec/**/*'
     - 'db/**/*.rb'
     - 'bin/**/*'
     - 'public/uploads/**/*'
 
 Metrics/LineLength:
-  Max: 100
+  Max: 110
 
 Style/Documentation:
   Enabled: false

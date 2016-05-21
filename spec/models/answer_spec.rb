@@ -7,7 +7,7 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of :body }
   it { should validate_presence_of :question_id }
   it { should validate_presence_of :user_id }
-  it { should accept_nested_attributes_for :attachments}
+  it { should accept_nested_attributes_for :attachments }
   it { should respond_to :accept! }
 
   let(:question) { create :question }
@@ -18,23 +18,22 @@ RSpec.describe Answer, type: :model do
   let(:negative_vote) { create :negative_vote }
 
   describe '.default_scope' do
-    it "shows the accepted answer at the top of the list" do
+    it 'shows the accepted answer at the top of the list' do
       expect(accepted_answer).to eq Answer.first
     end
   end
 
-
   describe '#accept!' do
     it 'accepts answer' do
-      expect {
+      expect do
         answer.accept!
-      }.to change { answer.accepted }.from(false).to(true)
+      end.to change { answer.accepted }.from(false).to(true)
     end
 
     it 'rejects previous accepted answer' do
-      expect {
+      expect do
         answer.accept!
-      }.to change { accepted_answer.reload.accepted }.from(true).to(false)
+      end.to change { accepted_answer.reload.accepted }.from(true).to(false)
     end
   end
 

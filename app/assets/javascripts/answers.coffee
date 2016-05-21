@@ -9,6 +9,7 @@ ready = ->
     $('div#answer-' + answer_id).hide();
     $('div#edit-answer-' + answer_id).show();
 
+  #TODO: find a way to refactor this
   $('.vote_answer').click () ->
     answer_id = $(this).data('answerId')
     $('a#upvote-answer-' + answer_id).bind 'ajax:success', (e, data, status, xhr) ->
@@ -16,11 +17,13 @@ ready = ->
       $('p#rating-answer-' + answer_id).html(data);
     .bind "ajax:error", (e, xhr, status, error) ->
       console.log("Error");
+
     $('a#downvote-answer-' + answer_id).bind 'ajax:success', (e, data, status, xhr) ->
       console.log("ok")
       $('p#rating-answer-' + answer_id).html(data);
     .bind "ajax:error", (e, xhr, status, error) ->
       console.log("Error");
+
     $('a#unvote-answer-' + answer_id).bind 'ajax:success', (e, data, status, xhr) ->
       console.log("ok")
       $('p#rating-answer-' + answer_id).html(data);

@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
 
   def upvote
     @vote = @question.votes.create(positive: true, user_id: current_user.id)
-      respond_to do |format|
+    respond_to do |format|
       if @vote.save
         format.json { render json: @question.rating }
       else
@@ -72,9 +72,7 @@ class QuestionsController < ApplicationController
   end
 
   def update_question
-    if current_user.author_of? @question
-      @question.update(question_params)
-    end
+    @question.update(question_params) if current_user.author_of? @question
   end
 
   def delete_question

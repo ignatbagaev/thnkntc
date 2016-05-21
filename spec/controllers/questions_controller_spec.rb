@@ -174,8 +174,8 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #upvote' do
     context 'if user not logged in' do
       let(:question) { create :question }
-      it 'upvotes question' do
-        delete :upvote, id: question.id, format: :json
+      it 'do not upvotes question' do
+        post :upvote, id: question.id, format: :json
         expect(question.rating).to eq 'rating: 0'
       end
     end
@@ -183,7 +183,7 @@ RSpec.describe QuestionsController, type: :controller do
       login_user
       let(:question) { create :question }
       it 'upvotes question' do
-        delete :upvote, id: question.id, format: :json
+        post :upvote, id: question.id, format: :json
         expect(question.rating).to eq 'rating: 1'
       end
     end 
@@ -192,8 +192,8 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #downvote' do
     context 'if user not logged in' do
       let(:question) { create :question }
-      it 'upvotes question' do
-        delete :upvote, id: question.id, format: :json
+      it 'do not downvotes question' do
+        post :upvote, id: question.id, format: :json
         expect(question.rating).to eq 'rating: 0'
       end
     end
@@ -201,24 +201,22 @@ RSpec.describe QuestionsController, type: :controller do
       login_user
       let(:question) { create :question }
       it 'downvotes question' do
-        delete :downvote, id: question.id, format: :json
+        post :downvote, id: question.id, format: :json
         expect(question.rating).to eq 'rating: -1'
       end
     end 
   end
 
   describe 'DELETE #unvote' do
-    context 'if user logged in' do
-      login_user
-      let(:question) { create :question }
-      let(:vote) { create(:vote) }
-      it 'unvotes question' do
-        question.votes << vote
-        @user.votes << vote
-        puts @user.votes.first == question.votes.first
-        delete :unvote, id: question.id, format: :json
-        expect(question.votes.find_by(user_id: @user)).to eq nil
-      end
+    login_user
+    let(:question) { create :question }
+    let(:vote) { create(:vote) }
+    it 'unvotes question' do
+      question.votes << vote
+      @user.votes << vote
+      puts @user.votes.first == question.votes.first
+      delete :unvote, id: question.id, format: :json
+      expect(question.votes.find_by(user_id: @user)).to eq nil
     end 
   end
 end

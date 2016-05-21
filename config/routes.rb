@@ -8,6 +8,11 @@ Rails.application.routes.draw do
       delete :unvote
     end
     resources :answers, shallow: true do
+      member do
+        post :upvote
+        post :downvote
+        delete :unvote
+    end
       post :accept, on: :member
     end
   end

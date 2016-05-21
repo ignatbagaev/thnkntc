@@ -104,7 +104,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATCH #accept' do
+  describe 'POST #accept' do
     login_user
 
     it 'assigns requested answer to @answer' do
@@ -141,5 +141,53 @@ RSpec.describe AnswersController, type: :controller do
       answer.reload
       expect(answer).to_not be_accepted
     end
+  end
+
+  describe 'POST #upvote' do
+    context 'if user not logged in' do
+      let(:answer) { create :answer }
+      it 'do not upvotes answer' do
+        post :upvote, id: answer.id, format: :json
+        expect(answer.rating).to eq 'rating: 0'
+      end
+    end
+    context 'if user logged in' do
+      login_user
+      let(:question) { create :question }
+      it 'upvotes answer' do
+        post :upvote, id: answer.id, format: :json
+        expect(answer.rating).to eq 'rating: 1'
+      end
+    end 
+  end
+
+  describe 'POST #downvote' do
+    context 'if user not logged in' do
+      let(:answer) { create :answer }
+      it 'do not downvotes answer' do
+        post :downvote, id: answer.id, format: :json
+        expect(answer.rating).to eq 'rating: 0'
+      end
+    end
+    context 'if user logged in' do
+      login_user
+      let(:question) { create :question }
+      it 'downvotes answer' do
+        post :downvote, id: answer.id, format: :json
+        expect(answer.rating).to eq 'rating: -1'
+      end
+    end 
+  end
+
+  describe 'DELETE #unvote' do
+    login_user
+    let(:answer) { create :answer }
+    let(:vote) { create(:vote) }
+    it 'unvotes answer' do
+      answer.votes << vote
+      @user.votes << vote
+      delete :unvote, id: answer.id, format: :json
+      expect(answer.votes.find_by(user_id: @user)).to eq nil
+    end 
   end
 end

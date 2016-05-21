@@ -3,7 +3,7 @@ div.question
     div.col-md-3
       p.question-rating= @question.rating
       - if current_user && !current_user.author_of?(@question)
-        - if current_user.votes.find_by(question_id: @question).nil?
+        - if current_user.votes.find_by(votable: @question).nil?
           p= link_to "upvote", upvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
           p= link_to "downvote", downvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
         - else

@@ -19,6 +19,35 @@ class AnswersController < ApplicationController
     check_owner(@answer.question) { @answer.accept! }
   end
 
+  def upvote
+    @answer_vote = @answer.votes.create(positive: true, user_id: current_user.id)
+    respond_to do |format|
+      if @answer_vote.save
+        format.json { render json: @answer.rating }
+      else
+        format.json { render json: @answer_vote.errors, status: 422 }
+      end
+    end
+  end
+
+  def downvote
+    @answer_vote = @answer.votes.create(positive: false, user_id: current_user.id)
+    respond_to do |format|
+      if @answer_vote.save
+        format.json { render json: @answer.rating }
+      else
+        format.json { render json: @answer_vote.errors, status: 422 }
+      end
+    end
+  end
+
+  def unvote
+    @answer.votes.find_by(user_id: current_user.id).destroy
+    respond_to do |format|
+      format.json { render json: @answer.rating }
+    end
+  end
+
   private
 
   def answer_params

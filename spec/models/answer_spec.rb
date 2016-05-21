@@ -14,6 +14,8 @@ RSpec.describe Answer, type: :model do
   let(:answer) { create(:answer, question: question) }
   let(:accepted_answer) { create(:accepted_answer, question: question) }
   let(:answer2) { create :answer }
+  let(:positive_votes) { create_list(:positive_vote, 2) }
+  let(:negative_vote) { create :negative_vote }
 
   describe '.default_scope' do
     it "shows the accepted answer at the top of the list" do
@@ -33,6 +35,14 @@ RSpec.describe Answer, type: :model do
       expect {
         answer.accept!
       }.to change { accepted_answer.reload.accepted }.from(true).to(false)
+    end
+  end
+
+  describe '#rating' do
+    it 'returns answer rating' do
+      answer.votes << positive_votes
+      answer.votes << negative_vote
+      expect(answer.rating).to eq 'rating: 1'
     end
   end
 end

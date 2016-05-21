@@ -1,8 +1,18 @@
-- if answer && answer.question && answer.persisted?
+- if answer.persisted?
   li.list-group-item id="answer-row-#{answer.id}"
     div id="answer-#{answer.id}" 
       - if answer.accepted?
         b Best answer
+      p id="rating-answer-#{answer.id}"
+        = answer.rating
+
+      - if current_user && !current_user.author_of?(answer)
+        - if current_user.votes.find_by(votable: answer).nil?
+          p= link_to "upvote", upvote_answer_path(answer), method: :post, remote: true, id: "upvote-answer-#{answer.id}", class: 'vote_answer', data: { type: :html, answer_id: answer.id }
+          p= link_to "downvote", downvote_answer_path(answer), method: :post, remote: true, id: "downvote-answer-#{answer.id}", class: 'vote_answer', data: { type: :html, answer_id: answer.id }
+        - else
+          p= link_to "unvote", unvote_answer_path(answer), method: :delete, remote: true, id: "unvote-answer-#{answer.id}", class: 'vote_answer', data:{ type: :html, answer_id: answer.id }
+      
       h5= answer.body
       - if answer.attachments.exists?
         p

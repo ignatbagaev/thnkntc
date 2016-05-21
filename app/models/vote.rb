@@ -1,6 +1,7 @@
 class Vote < ActiveRecord::Base
   belongs_to :user
-  belongs_to :question
+  belongs_to :votable, polymorphic: true
 
-  validates :user_id, uniqueness: { scope: :question_id, message: "You have already voted" }
+  validates :user_id, uniqueness: { scope: [:votable_id, :votable_type],
+                                    message: 'You have already voted' }
 end

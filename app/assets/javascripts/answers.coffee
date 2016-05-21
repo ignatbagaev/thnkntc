@@ -5,30 +5,23 @@
 ready = ->
   $('.edit-answer-link').click (e) ->
     e.preventDefault();
-    answer_id = $(this).data('answerId')
+    answer_id = $(this).data('answerId');
     $('div#answer-' + answer_id).hide();
     $('div#edit-answer-' + answer_id).show();
 
-  #TODO: find a way to refactor this
   $('.vote_answer').click () ->
-    answer_id = $(this).data('answerId')
-    $('a#upvote-answer-' + answer_id).bind 'ajax:success', (e, data, status, xhr) ->
-      console.log("ok")
-      $('p#rating-answer-' + answer_id).html(data);
-    .bind "ajax:error", (e, xhr, status, error) ->
-      console.log("Error");
+    answer_id = $(this).data('answerId');
 
-    $('a#downvote-answer-' + answer_id).bind 'ajax:success', (e, data, status, xhr) ->
-      console.log("ok")
-      $('p#rating-answer-' + answer_id).html(data);
-    .bind "ajax:error", (e, xhr, status, error) ->
-      console.log("Error");
+    vote = (selector) ->
+      $(selector).bind 'ajax:success', (e, data, status, xhr) ->
+        console.log("ok");
+        $('p#rating-answer-' + answer_id).html(data);
+      .bind "ajax:error", (e, xhr, status, error) ->
+        console.log("Error");
 
-    $('a#unvote-answer-' + answer_id).bind 'ajax:success', (e, data, status, xhr) ->
-      console.log("ok")
-      $('p#rating-answer-' + answer_id).html(data);
-    .bind "ajax:error", (e, xhr, status, error) ->
-      console.log("Error");
+    vote('a#upvote-answer-' + answer_id);
+    vote('a#downvote-answer-' + answer_id);
+    vote('a#unvote-answer-' + answer_id);
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

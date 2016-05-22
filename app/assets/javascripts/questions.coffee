@@ -9,7 +9,7 @@ ready = ->
     $('div.edit-question').show()
 
   $('.vote_question').bind 'ajax:success', (e, data, status, xhr) ->
-    $('p.question-rating').html(data);
+    $('p.question-rating').html("rating: " + data);
   .bind "ajax:error", (e, xhr, status, error) ->
     console.log("Error");
 

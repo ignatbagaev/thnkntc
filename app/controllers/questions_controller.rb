@@ -1,16 +1,16 @@
 class QuestionsController < ApplicationController
   include Voted
-  include Authored
 
-  before_action :authenticate_user!, except: [:show, :index]
+  skip_before_action :authenticate_user!, only: [:show, :index]
   before_action :load_question, only: [:edit, :show, :update, :destroy, :upvote, :downvote, :unvote]
+
   def new
     @question = Question.new
     @question.attachments.build
   end
 
   def show
-    @answer = @question.answers.new
+    @answer = @question.answers.build
     @answer.attachments.build
   end
 
@@ -24,11 +24,15 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    check_author(@question) { @question.update(question_params) }
+    user_owns?(@question) ? @question.update(question_params) : (render head: 403)
   end
 
   def destroy
-    check_author(@question) { @question.destroy && redirect_to(questions_path) }
+    if user_owns?(@question)
+      @question.destroy && redirect_to(questions_path)
+    else
+      redirect_to @question
+    end
   end
 
   private

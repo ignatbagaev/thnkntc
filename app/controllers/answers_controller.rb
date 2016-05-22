@@ -1,7 +1,6 @@
 class AnswersController < ApplicationController
   include Voted
-  include Authored
-  before_action :authenticate_user!
+
   before_action :load_answer, only: [:update, :destroy, :accept]
 
   def create
@@ -11,15 +10,15 @@ class AnswersController < ApplicationController
   end
 
   def update
-    check_author(@answer) { @answer.update(answer_params) }
+    user_owns?(@answer) ? @answer.update(answer_params) : (render head: 403)
   end
 
   def destroy
-    check_author(@answer) { @answer.destroy }
+    user_owns?(@answer) ? @answer.destroy : (render head: 403)
   end
 
   def accept
-    check_author(@answer.question) { @answer.accept! }
+    user_owns?(@answer.question) ? @answer.accept! : (render head: 403)
   end
 
   private

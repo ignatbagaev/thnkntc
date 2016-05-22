@@ -29,12 +29,4 @@ RSpec.describe Question, type: :model do
       expect(question.has_accepted_answer?).to eq false
     end
   end
-
-  describe '#rating' do
-    it 'returns question rating' do
-      question.votes << positive_votes
-      question.votes << negative_vote
-      expect(question.rating).to eq 'rating: 1'
-    end
-  end
 end

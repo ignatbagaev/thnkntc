@@ -1,15 +1,15 @@
 FactoryGirl.define do
   factory :vote do
-    positive false
+    value -1
   end
 
   factory :positive_vote, class: 'Vote' do
-    positive true
+    value 1
     user
   end
 
   factory :negative_vote, class: 'Vote' do
-    positive false
+    value -1
     user
   end
 end

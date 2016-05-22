@@ -15,7 +15,7 @@ ready = ->
     vote = (selector) ->
       $(selector).bind 'ajax:success', (e, data, status, xhr) ->
         console.log("ok");
-        $('p#rating-answer-' + answer_id).html(data);
+        $('p#rating-answer-' + answer_id).html("rating: " + data);
       .bind "ajax:error", (e, xhr, status, error) ->
         console.log("Error");
 

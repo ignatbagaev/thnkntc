@@ -6,17 +6,11 @@ module Voted
   end
 
   def upvote
-    unless current_user.author_of?(@votable)
-      @vote = @votable.votes.new(positive: true, user_id: current_user.id)
-      @vote.save ? render_json_with_rating : render_error
-    end
+    vote
   end
 
   def downvote
-    unless current_user.author_of?(@votable)
-      @vote = @votable.votes.new(positive: false, user_id: current_user.id)
-      @vote.save ? render_json_with_rating : render_error
-    end
+    vote
   end
 
   def unvote
@@ -25,6 +19,19 @@ module Voted
   end
 
   private
+
+  def vote
+    unless current_user.author_of?(@votable)
+      value = action_name == 'upvote' ? 1 : -1
+      @vote = @votable.votes.new(value: value, user_id: current_user.id)
+      if @vote.save
+        @votable.update_rating
+        render_json_with_rating
+      else
+        render_error
+      end
+    end
+  end
 
   def model_klass
     controller_name.classify.constantize

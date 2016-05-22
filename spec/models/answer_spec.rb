@@ -36,12 +36,4 @@ RSpec.describe Answer, type: :model do
       end.to change { accepted_answer.reload.accepted }.from(true).to(false)
     end
   end
-
-  describe '#rating' do
-    it 'returns answer rating' do
-      answer.votes << positive_votes
-      answer.votes << negative_vote
-      expect(answer.rating).to eq 'rating: 1'
-    end
-  end
 end

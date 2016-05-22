@@ -153,7 +153,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:answer) { create :answer }
       it 'do not upvotes answer' do
         post :upvote, id: answer.id, format: :json
-        expect(answer.rating).to eq 'rating: 0'
+        expect(answer.reload.rating).to eq 0
       end
     end
     context 'if user logged in' do
@@ -161,7 +161,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:question) { create :question }
       it 'upvotes answer' do
         post :upvote, id: answer.id, format: :json
-        expect(answer.rating).to eq 'rating: 1'
+        expect(answer.reload.rating).to eq 1
       end
     end
   end
@@ -171,7 +171,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:answer) { create :answer }
       it 'do not downvotes answer' do
         post :downvote, id: answer.id, format: :json
-        expect(answer.rating).to eq 'rating: 0'
+        expect(answer.reload.rating).to eq 0
       end
     end
     context 'if user logged in' do
@@ -179,7 +179,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:question) { create :question }
       it 'downvotes answer' do
         post :downvote, id: answer.id, format: :json
-        expect(answer.rating).to eq 'rating: -1'
+        expect(answer.reload.rating).to eq -1
       end
     end
   end

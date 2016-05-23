@@ -2,12 +2,20 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :vote, only: [:upvote, :downvote, :unvote]
+    # before_action :vote, only: [:upvote, :downvote, :unvote]
   end
 
-  def upvote; end
-  def downvote; end
-  def unvote; end
+  def upvote
+    vote { @votable.upvote!(current_user) }
+  end
+
+  def downvote
+    vote { @votable.downvote!(current_user) }
+  end
+
+  def unvote
+    vote { @votable.unvote!(current_user) }
+  end
 
   private
 
@@ -16,7 +24,7 @@ module Voted
     if current_user.author_of?(@votable)
       render head: 403
     else
-      @votable.vote!(action_name, current_user) && render_rating || render_error
+      (yield if block_given?) && render_rating || render_error
     end
   end
 

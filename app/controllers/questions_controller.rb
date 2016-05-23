@@ -24,11 +24,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    user_owns?(@question) ? @question.update(question_params) : (render head: 403)
+    current_user.author_of?(@question) ? @question.update(question_params) : (render head: 403)
   end
 
   def destroy
-    if user_owns?(@question)
+    if current_user.author_of?(@question)
       @question.destroy && redirect_to(questions_path)
     else
       redirect_to @question

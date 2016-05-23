@@ -10,15 +10,15 @@ class AnswersController < ApplicationController
   end
 
   def update
-    user_owns?(@answer) ? @answer.update(answer_params) : (render head: 403)
+    current_user.author_of?(@answer) ? @answer.update(answer_params) : (render head: 403)
   end
 
   def destroy
-    user_owns?(@answer) ? @answer.destroy : (render head: 403)
+    current_user.author_of?(@answer) ? @answer.destroy : (render head: 403)
   end
 
   def accept
-    user_owns?(@answer.question) ? @answer.accept! : (render head: 403)
+    current_user.author_of?(@answer.question) ? @answer.accept! : (render head: 403)
   end
 
   private

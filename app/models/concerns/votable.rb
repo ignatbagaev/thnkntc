@@ -6,23 +6,24 @@ module Votable
   end
 
 
-  def vote!(action, user)
+  def upvote!(user)
     transaction do
-      action == 'unvote' ? delete_vote(action, user) : create_vote(action, user)
+      votes.create(value: 1, user: user)
+      update(rating: (rating + 1))
     end
   end
 
-  private
-
-  def create_vote(action, user)
-    value = action == 'upvote' ? 1 : -1
-    votes.create(value: value, user: user)
-    update(rating: (rating + value))
+  def downvote!(user)
+    transaction do
+      votes.create(value: -1, user: user)
+      update(rating: (rating + (-1)))
+    end
   end
 
-  def delete_vote(action, user)
-    vote = votes.find_by(user_id: user.id)
-    if vote
+  def unvote!(user)
+    transaction do
+      vote = votes.find_by(user_id: user.id)
+      return false unless vote
       value = vote.value
       vote.destroy && update(rating: (rating - value))
     end

@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:attachments).dependent(:destroy) }
-  it { should have_many(:votes).dependent(:destroy) }
   it { should belong_to :user }
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
@@ -17,6 +16,8 @@ RSpec.describe Question, type: :model do
   let(:accepted_answer) { create :accepted_answer }
   let(:positive_votes) { create_list(:positive_vote, 2) }
   let(:negative_vote) { create :negative_vote }
+
+  it_behaves_like 'votable'
 
   describe '#has_accepted_answer?' do
     it 'returns true if question has accepted answer' do

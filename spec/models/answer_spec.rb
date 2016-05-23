@@ -17,6 +17,8 @@ RSpec.describe Answer, type: :model do
   let(:positive_votes) { create_list(:positive_vote, 2) }
   let(:negative_vote) { create :negative_vote }
 
+  it_behaves_like 'votable'
+
   describe '.default_scope' do
     it 'shows the accepted answer at the top of the list' do
       expect(accepted_answer).to eq Answer.first

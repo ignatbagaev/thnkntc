@@ -2,34 +2,21 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :load_votable, only: [:upvote, :downvote, :unvote]
+    before_action :vote, only: [:upvote, :downvote, :unvote]
   end
 
-  def upvote
-    vote
-  end
-
-  def downvote
-    vote
-  end
-
-  def unvote
-    @votable.votes.find_by(user_id: current_user.id).destroy
-    render_json_with_rating
-  end
+  def upvote; end
+  def downvote; end
+  def unvote; end
 
   private
 
   def vote
-    unless current_user.author_of?(@votable)
-      value = action_name == 'upvote' ? 1 : -1
-      @vote = @votable.votes.new(value: value, user_id: current_user.id)
-      if @vote.save
-        @votable.update_rating
-        render_json_with_rating
-      else
-        render_error
-      end
+    @votable = model_klass.find(params[:id])
+    if current_user.author_of?(@votable)
+      render head: 403
+    else
+      @votable.vote!(action_name, current_user) && render_rating || render_error
     end
   end
 
@@ -37,15 +24,11 @@ module Voted
     controller_name.classify.constantize
   end
 
-  def load_votable
-    @votable = model_klass.find(params[:id])
-  end
-
-  def render_json_with_rating
+  def render_rating
     render json: @votable.rating
   end
 
   def render_error
-    render json: @vote.errors, status: 422
+    render head: 422
   end
 end

@@ -4,12 +4,10 @@
   table.table.table-hover
     thead
       tr
-        th #
         th Title
     tbody
       - @questions.each do |question|
-        tr
-          td= @questions.index(question) + 1
+        tr id="#{question.id}"
           td= link_to question.title, question
 - else 
   h4.text-center
@@ -20,3 +18,5 @@
     - else 
       = link_to 'Sign in', new_user_session_path, class: 'default'
       |  to do it!
+
+= subscribe_to "/questions"

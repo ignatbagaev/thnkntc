@@ -8,12 +8,11 @@ feature 'create question', '
   given(:user) { create(:user) }
   before { log_in user }
 
-  scenario 'with valid attributes if user logged in' do
+  scenario 'with valid attributes if user logged in', js: true do
     visit new_question_path
     fill_in 'Title', with: 'My question'
     fill_in 'Body',  with: 'Description of my issue'
     click_on 'Ask'
-    expect(page).to have_content 'Question successfuly created'
     expect(page).to have_content 'My question'
     expect(page).to have_content 'Description of my issue'
   end

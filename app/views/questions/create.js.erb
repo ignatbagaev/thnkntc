@@ -1,0 +1,4 @@
+$(window.location.replace("/questions/<%= @question.id %>"))
+<% publish_to "/questions" do %>
+$('tbody').append('<tr id=<%= @question.id %>><td><%= link_to @question.title, question_path(@question) %></td><tr>')
+<% end %>

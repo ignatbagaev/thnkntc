@@ -20,7 +20,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params.merge(user: current_user))
-    save_question || render('new')
+    @question.save || render('new')
   end
 
   def update
@@ -29,7 +29,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     if current_user.author_of?(@question)
-      @question.destroy && redirect_to(questions_path)
+      @question.destroy
     else
       redirect_to @question
     end
@@ -43,9 +43,5 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
-  end
-
-  def save_question
-    redirect_to @question, notice: 'Question successfuly created' if @question.save
   end
 end

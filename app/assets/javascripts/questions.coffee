@@ -6,7 +6,7 @@ ready = ->
   $('.edit-question-link').click (e) ->
     e.preventDefault();
     $('div.question').hide();
-    $('div.edit-question').show()
+    $('.edit-question').show()
 
   $('.vote_question').bind 'ajax:success', (e, data, status, xhr) ->
     $('p.question-rating').html("rating: " + data);

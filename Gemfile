@@ -32,6 +32,8 @@ gem 'rubocop', '~> 0.40.0', require: false
 gem 'carrierwave'
 gem 'remotipart'
 gem 'nested_form'
+gem 'private_pub'
+gem 'thin'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

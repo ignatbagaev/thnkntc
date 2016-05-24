@@ -1,6 +1,7 @@
-var id = <%= @answer.id %>
-$('li#answer-row-' + id).hide();
-
+<% publish_to "/answers_of_#{@answer.question.id}" do %>
+  var id = <%= @answer.id %>
+  $('li#answer-row-' + id).hide();
+<% end %>
 <% if @answer.accepted? %>
   $('.button-accept').val('Best'); 
 <% end %>

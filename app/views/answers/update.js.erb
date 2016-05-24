@@ -4,5 +4,8 @@ var id = <%= @answer.id %>
     $('div#answer-error-' + id).html('<%= j message %>');
   <% end %>
 <% else %>
-  $('#answer-row-' + id).html('<%= j render @answer %>');
+  <% publish_to "/answers_of_#{@answer.question.id}" do %>
+    var id = <%= @answer.id %>
+    $('#answer-row-' + id).html('<%= j render @answer %>');
+  <% end %>
 <% end %>

@@ -1,8 +1,12 @@
 <% if @answer.errors.present? %>
   <% @answer.errors.full_messages.each do |message| %>
-    $('div#new-answer-error').html('<%= j message %>');
+    $('div#new_answer_error').html('<%= j message %>');
+    console.log('<%= j message %>')
   <% end %>
 <% else %>
+  <% publish_to "/answers_of_#{@answer.question.id}" do %>
+    $('ul.list-group').append("<%= j render @answer %>")
+  <% end %>
+  $('div#new_answer_error').html('');
   $('textarea#new_answer_body').val('')
-  $('ul.list-group').append("<%= j render @answer %>")
 <% end %>

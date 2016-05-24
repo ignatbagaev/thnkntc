@@ -23,3 +23,5 @@ div.col-md-offset-2.col-md-8.col-sm-12
       h5.text-center
         = link_to 'Sign in', new_user_session_path, class: 'default'
         |  to do it!
+
+= subscribe_to "/answers_of_#{@question.id}"

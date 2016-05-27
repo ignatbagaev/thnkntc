@@ -4,6 +4,7 @@ class Answer < ActiveRecord::Base
 
   default_scope { order(accepted: :desc) }
 
+  has_many :comments, as: :commentable, dependent: :destroy
   belongs_to :question
   belongs_to :user
 

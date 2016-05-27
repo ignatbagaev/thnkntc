@@ -26,3 +26,6 @@ h4 > p {
 .question-error, .errors {
   color: red;
 }
+.new_comment_form {
+  display: none;
+}

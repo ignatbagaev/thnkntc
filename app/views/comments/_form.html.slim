@@ -1,0 +1,5 @@
+= link_to "add comment", '', class: 'new_comment_link', id: "link_new_comment_for_#{commentable.class.name.downcase}#{commentable.id}", data: { commentable_type: "#{commentable.class.name.downcase}", commentable_id: "#{commentable.id}" }
+div.new_comment_form id="new_comment_for_#{commentable.class.name.downcase}#{commentable.id}"
+  = form_for([commentable, commentable.comments.build], remote: true) do |f|
+    p= f.text_area :body
+    p= f.submit 'Add comment'

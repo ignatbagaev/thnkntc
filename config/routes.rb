@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   end
   
   resources :questions, concerns: :votable do
+    resources :comments
     resources :answers, concerns: :votable, shallow: true do
+      resources :comments
       post :accept, on: :member
     end
   end

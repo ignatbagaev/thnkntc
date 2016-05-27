@@ -46,4 +46,12 @@
         = f.label :body
         = f.text_area :body, class: 'form-control'
         = f.submit 'Save', class: 'btn btn-default'
+    - if current_user  
+      = render partial: 'comments/form', locals: { commentable: answer }
+    small
+      p
+        b comments
+    div id="comments_of_answer#{answer.id}"
+      = render answer.comments
     hr
+= subscribe_to "/answer_#{answer.id}_comments"

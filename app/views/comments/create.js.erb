@@ -1,0 +1,10 @@
+<% if @comment.errors.present? %>
+  <% @comment.errors.full_messages.each do |message| %>
+    console.log('<%= j message %>')
+  <% end %>
+<% else %>
+  <% publish_to "/#{@comment.commentable_type.downcase}_#{@comment.commentable_id}_comments" do %>
+    $('div#comments_of_' + '<%= "#{@comment.commentable_type.downcase}#{@comment.commentable_id}" %>').append("<%= j render @comment %>")
+  <% end %>
+  $('textarea').val('')
+<% end %>

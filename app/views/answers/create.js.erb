@@ -4,7 +4,7 @@
     console.log('<%= j message %>')
   <% end %>
 <% else %>
-  <% publish_to "/answers_of_#{@answer.question.id}" do %>
+  <% publish_to "/questions/#{@answer.question.id}" do %>
     $('ul.list-group').append("<%= j render @answer %>")
   <% end %>
   $('div#new_answer_error').html('');

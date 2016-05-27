@@ -3,7 +3,7 @@
     console.log('<%= j message %>')
   <% end %>
 <% else %>
-  <% publish_to "/#{@comment.commentable_type.downcase}_#{@comment.commentable_id}_comments" do %>
+  <% publish_to "/questions/#{@comment.commentable.is_a?(Question) ? @comment.commentable_id : @comment.commentable.question_id}" do %>
     $('div#comments_of_' + '<%= "#{@comment.commentable_type.downcase}#{@comment.commentable_id}" %>').append("<%= j render @comment %>")
   <% end %>
   $('textarea').val('')

@@ -59,18 +59,18 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     context 'when user is not logged in' do
       it 'does not saves the question' do
-        expect { post :create, question: attributes_for(:question), format: :js }.to_not change(Question, :count)
+        expect { post :create, question: attributes_for(:question) }.to_not change(Question, :count)
       end
     end
 
     context 'with valid attributes when user logged in' do
       login_user
       it 'assciates new question with user and saves it to database' do
-        expect { post :create, question: attributes_for(:question), format: :js }.to change(@user.questions, :count).by 1
+        expect { post :create, question: attributes_for(:question)}.to change(@user.questions, :count).by 1
       end
       it 'redirects to show view' do
-        post :create, question: attributes_for(:question), format: :js
-        expect(response.status).to eq 200
+        post :create, question: attributes_for(:question)
+        expect(response).to redirect_to question_path(assigns(:question))
       end
     end
 
@@ -148,11 +148,11 @@ RSpec.describe QuestionsController, type: :controller do
 
       context 'own question' do
         it 'deletes question' do
-          expect { delete :destroy, id: question.id, format: :js }.to change(@user.questions, :count).by(-1)
+          expect { delete :destroy, id: question.id }.to change(@user.questions, :count).by(-1)
         end
         it 'redirects to questions list' do
-          delete :destroy, id: question.id, format: :js
-          expect(response.status).to eq 200
+          delete :destroy, id: question.id
+          expect(response).to redirect_to questions_path
         end
       end
 

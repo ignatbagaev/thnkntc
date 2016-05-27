@@ -8,7 +8,7 @@ feature 'create question', '
   given(:user) { create(:user) }
   before { log_in user }
 
-  scenario 'with valid attributes if user logged in', js: true do
+  scenario 'with valid attributes if user logged in' do
     visit new_question_path
     fill_in 'Title', with: 'My question'
     fill_in 'Body',  with: 'Description of my issue'

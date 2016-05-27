@@ -1,5 +1,5 @@
 div.col-md-offset-2.col-md-8.col-sm-12
-  = nested_form_for @question, remote: true do |f|
+  = nested_form_for @question do |f|
     = render 'shared/error_messages', object: f.object
     div.field
       = f.label :title

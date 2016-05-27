@@ -20,7 +20,12 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params.merge(user: current_user))
-    @question.save || render('new')
+    if @question.save
+      PrivatePub.publish_to "/questions", question: @question
+      redirect_to @question
+    else
+      render('new')
+    end
   end
 
   def update
@@ -29,7 +34,8 @@ class QuestionsController < ApplicationController
 
   def destroy
     if current_user.author_of?(@question)
-      @question.destroy
+      PrivatePub.publish_to "/questions_destroying", question_id: @question.id
+      @question.destroy && redirect_to(questions_path)
     else
       redirect_to @question
     end

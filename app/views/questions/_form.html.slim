@@ -11,7 +11,7 @@ div.col-md-offset-2.col-md-8.col-sm-12
     p
       b Attachments:
     div.attachments  
-      = f.fields_for :attachments do |a|
+      = f.fields_for :attachments, @question.attachments.build do |a|
         div.field
           = a.label :file
           = a.file_field :file, class: 'form-control'
@@ -21,4 +21,4 @@ div.col-md-offset-2.col-md-8.col-sm-12
       div.pull-left
         = link_to 'Back', questions_path, class: 'btn btn-default'
       div.pull-right
-        = f.submit 'Ask',class: 'btn btn-default'
+        = f.submit 'Ask',class: 'btn btn-default new_question_button'

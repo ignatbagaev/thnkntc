@@ -304,6 +304,7 @@ DEPENDENCIES
   private_pub
   rails (= 4.2.6)
   remotipart
+  responders
   rspec-rails (~> 3.0)
   rubocop (~> 0.40.0)
   sass-rails (~> 5.0)

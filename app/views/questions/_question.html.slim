@@ -1,7 +1,7 @@
 div.question
   div.row
     div.col-md-3
-      p.question-rating= "rating: #{@question.rating}"
+      p.question-rating= "rating: #{@question.rating || 0}"
       - if current_user && !current_user.author_of?(@question)
         - if current_user.votes.find_by(votable: @question).nil?
           p= link_to "upvote", upvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
@@ -27,7 +27,7 @@ div.question
       - if current_user && current_user.author_of?(@question)
         div.pull-right
           = link_to 'Edit question', edit_question_path(@question), class: 'btn btn-default edit-question-link'
-          = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default'
+          = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default delete_question_link'
 div.edit-question
   div.question-error
   = nested_form_for @question, remote: true do |f|

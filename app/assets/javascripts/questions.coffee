@@ -17,7 +17,7 @@ ready = ->
     $('tbody').append('<tr id=' + data.question.id + '><td><a href="questions/'+ data.question.id + '">' + data.question.title + '</a></td></tr>')
 
   PrivatePub.subscribe "/questions_destroying", (data, channel) ->
-    $('tr#'+ data.question_id).remove()
+    $('tr#'+ data.question.id).remove()
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

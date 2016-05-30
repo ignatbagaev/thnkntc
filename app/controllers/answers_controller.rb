@@ -2,29 +2,36 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :load_answer, only: [:update, :destroy, :accept]
+  before_action :check_author, only: [:update, :destroy]
+  
+  respond_to :js
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params.merge(user: current_user))
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    current_user.author_of?(@answer) ? @answer.update(answer_params) : (render head: 403)
+    @answer.update(answer_params)
+    respond_with(@answer)
   end
 
   def destroy
-    current_user.author_of?(@answer) ? @answer.destroy : (render head: 403)
+    respond_with(@answer.destroy)
   end
 
   def accept
-    current_user.author_of?(@answer.question) ? @answer.accept! : (render head: 403)
+    current_user.author_of?(@answer.question) ? respond_with(@answer.accept!) : (render head: 403)
   end
 
   private
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
+  end
+
+  def check_author
+    render status: 403 unless current_user.author_of?(@answer)
   end
 
   def load_answer

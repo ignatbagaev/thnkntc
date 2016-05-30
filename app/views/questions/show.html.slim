@@ -14,7 +14,7 @@ div.col-md-offset-2.col-md-8.col-sm-12
         = f.text_area :body, rows: '5', class: 'form-control', id: 'new_answer_body'
         br
         div.answer-attachments
-          = f.fields_for :attachments do |a|
+          = f.fields_for :attachments, @answer.attachments.build do |a|
             = a.label :file
             = a.file_field :file, class: 'form-control'
           = f.link_to_add "One more file", :attachments

@@ -204,7 +204,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'unvotes question' do
       question.votes << vote
       @user.votes << vote
-      puts @user.votes.first == question.votes.first
       delete :unvote, id: question.id, format: :json
       expect(question.votes.find_by(user_id: @user)).to eq nil
     end

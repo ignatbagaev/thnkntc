@@ -27,7 +27,7 @@ feature 'through twitter' do
   end
 
   given(:user) { create :user }
-  given(:auth) { create(:authorization, provider: 'twitter', uid: '123456') }
+  given(:auth) { create(:authorization, provider: 'twitter', uid: '123456', user: user) }
   scenario 'can sign IN user with twitter account' do
     user.authorizations << auth
     mock_twitter_auth_hash

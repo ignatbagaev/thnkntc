@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :comment do
-    body "MyComment"
+    body 'MyComment'
   end
-  
+
   factory :invalid_comment, class: 'Comment' do
     body nil
   end

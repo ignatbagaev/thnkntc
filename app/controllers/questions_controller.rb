@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
   before_action :check_author, only: [:update, :destroy]
 
   respond_to :js, only: :update
-  
+
   def new
     respond_with(@question = Question.new)
   end
@@ -22,7 +22,7 @@ class QuestionsController < ApplicationController
 
   def create
     respond_with(@question = Question.create(question_params.merge(user: current_user)))
-    PrivatePub.publish_to "/questions", question: @question if @question.valid?
+    PrivatePub.publish_to '/questions', question: @question if @question.valid?
   end
 
   def update
@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     respond_with(@question.destroy)
-    PrivatePub.publish_to "/questions_destroying", question: @question if @question.destroyed?
+    PrivatePub.publish_to '/questions_destroying', question: @question if @question.destroyed?
   end
 
   private
@@ -47,9 +47,8 @@ class QuestionsController < ApplicationController
 
   def check_author
     return if current_user.author_of?(@question)
-    case
-    when request.format.js? then (render status: 403)
-    when request.format.html? then redirect_to questions_path 
+    if request.format.js? then (render status: 403)
+    elsif request.format.html? then redirect_to questions_path
     end
   end
 end

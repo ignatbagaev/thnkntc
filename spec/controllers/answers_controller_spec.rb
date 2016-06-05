@@ -179,7 +179,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:question) { create :question }
       it 'downvotes answer' do
         post :downvote, id: answer.id, format: :json
-        expect(answer.reload.rating).to eq -1
+        expect(answer.reload.rating).to eq(-1)
       end
     end
   end

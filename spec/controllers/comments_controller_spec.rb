@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-  let(:question) { create :question}
+  let(:question) { create :question }
 
   describe 'POST #create' do
     login_user
@@ -17,7 +17,8 @@ RSpec.describe CommentsController, type: :controller do
     end
     context 'when parameters are invalid' do
       it 'not creates comment' do
-        expect { post :create, comment: attributes_for(:invalid_comment), question_id: question.id, format: :js }
+        comment = attributes_for(:invalid_comment)
+        expect { post :create, comment: comment, question_id: question.id, format: :js }
           .to_not change(Comment, :count)
       end
     end

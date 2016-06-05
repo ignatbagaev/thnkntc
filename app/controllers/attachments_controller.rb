@@ -1,7 +1,7 @@
 class AttachmentsController < ApplicationController
   before_action :load_attachment
   before_action :check_author
-  
+
   respond_to :js
 
   def destroy

@@ -5,7 +5,6 @@ module Votable
     has_many :votes, as: :votable, dependent: :destroy
   end
 
-
   def upvote!(user)
     transaction do
       votes.create(value: 1, user: user)
@@ -16,7 +15,7 @@ module Votable
   def downvote!(user)
     transaction do
       votes.create(value: -1, user: user)
-      update(rating: (rating + (-1)))
+      update(rating: (rating + -1))
     end
   end
 

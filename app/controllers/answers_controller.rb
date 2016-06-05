@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
 
   before_action :load_answer, only: [:update, :destroy, :accept]
   before_action :check_author, only: [:update, :destroy]
-  
+
   respond_to :js
 
   def create

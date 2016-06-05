@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Users::OmniauthCallbacksController, type: :controller do
-  before { @request.env["devise.mapping"] = Devise.mappings[:user] }
+  before { @request.env['devise.mapping'] = Devise.mappings[:user] }
 
   describe 'GET #facebook' do
-
     context 'when no oauth_data' do
       before do
         get :facebook
@@ -14,9 +13,9 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
       end
     end
 
-    context 'when user exists' do  
+    context 'when user exists' do
       let(:user) { create :user }
-      
+
       before do
         stub_env_for_omniauth(info: { email: user.email })
         get :facebook
@@ -26,7 +25,6 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
     end
 
     context 'when user not exists' do
-
       context 'email is provided' do
         before do
           stub_env_for_omniauth
@@ -44,14 +42,14 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
 
         it 'stores data in session' do
           hash = stub_env_for_omniauth
-          expect(session["devise.omniauth"][:provider]).to eq hash.provider
-          expect(session["devise.omniauth"][:uid]).to eq hash.uid
+          expect(session['devise.omniauth'][:provider]).to eq hash.provider
+          expect(session['devise.omniauth'][:uid]).to eq hash.uid
         end
 
         it { should_not be_user_signed_in }
         it { should render_template 'oauth/provide_email' }
       end
-    end    
+    end
   end
 
   describe 'GET #twitter' do
@@ -64,9 +62,9 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
       end
     end
 
-    context 'when user exists' do  
+    context 'when user exists' do
       let(:user) { create :user }
-      
+
       before do
         stub_env_for_omniauth(provier: 'twitter', info: { email: user.email })
         get :twitter
@@ -76,7 +74,6 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
     end
 
     context 'when user not exists' do
-
       context 'when email is provided' do
         before do
           stub_env_for_omniauth(provier: 'twitter')
@@ -94,14 +91,14 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
 
         it 'stores data in session' do
           hash = stub_env_for_omniauth(provier: 'twitter')
-          expect(session["devise.omniauth"][:provider]).to eq hash.provider
-          expect(session["devise.omniauth"][:uid]).to eq hash.uid
+          expect(session['devise.omniauth'][:provider]).to eq hash.provider
+          expect(session['devise.omniauth'][:uid]).to eq hash.uid
         end
 
         it { should_not be_user_signed_in }
         it { should render_template 'oauth/provide_email' }
       end
-    end    
+    end
   end
 
   describe 'POST #finish_signin' do
@@ -123,7 +120,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
 
     context 'when valid email' do
       before do
-        session["devise.omniauth"] = stub_env_for_omniauth(info: nil)
+        session['devise.omniauth'] = stub_env_for_omniauth(info: nil)
         post :finish_signin, email: 'valid@email.com'
       end
 
@@ -133,7 +130,9 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
   end
 
   def stub_env_for_omniauth(hash = {})
-    hash = OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: 'user@test.com' }).merge(hash)
-    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[hash.provider.to_sym] = hash
+    hash = OmniAuth::AuthHash.new(
+      provider: 'facebook', uid: '123456', info: { email: 'user@test.com' }
+    ).merge(hash)
+    request.env['omniauth.auth'] = OmniAuth.config.mock_auth[hash.provider.to_sym] = hash
   end
 end

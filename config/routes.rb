@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks',
-                                    registrations: 'users/registrations' }
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   devise_scope :user do
     post 'oauth/finish_signin', to: 'users/omniauth_callbacks#finish_signin'

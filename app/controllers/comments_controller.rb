@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   respond_to :js
-  
+
   def create
     set_commentable
     respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))

@@ -1,7 +1,6 @@
 shared_examples 'votable' do
-
   it { should have_many(:votes).dependent(:destroy) }
-  
+
   let(:user) { create :user }
   subject(:votable) { create(described_class.to_s.underscore.to_sym) }
 
@@ -15,7 +14,6 @@ shared_examples 'votable' do
       it 'increases rating by 1' do
         expect(votable.rating).to eq 1
       end
-    
     end
 
     context 'when there is previous vote' do
@@ -34,9 +32,8 @@ shared_examples 'votable' do
         expect(votable.votes.where(value: -1).count).to eq 1
       end
       it 'increases rating by 1' do
-        expect(votable.rating).to eq -1
+        expect(votable.rating).to eq(-1)
       end
-    
     end
 
     context 'when there is previous vote' do
@@ -66,5 +63,4 @@ shared_examples 'votable' do
       end
     end
   end
-
 end

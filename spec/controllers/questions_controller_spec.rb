@@ -58,7 +58,7 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with valid attributes when user logged in' do
       login_user
       it 'assciates new question with user and saves it to database' do
-        expect { post :create, question: attributes_for(:question)}.to change(@user.questions, :count).by 1
+        expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
       end
       it 'redirects to show view' do
         post :create, question: attributes_for(:question)
@@ -192,7 +192,7 @@ RSpec.describe QuestionsController, type: :controller do
       let(:question) { create :question }
       it 'downvotes question' do
         post :downvote, id: question.id, format: :json
-        expect(question.reload.rating).to eq -1
+        expect(question.reload.rating).to eq(-1)
       end
     end
   end

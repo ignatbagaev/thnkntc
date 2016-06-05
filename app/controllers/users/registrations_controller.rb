@@ -3,24 +3,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new
-    build_resource
-    if session['devise.omniauth']
-      resource.password = resource.password_confirmation = Devise.friendly_token[0, 20]
-    end
-    respond_with resource
-  end
+  # def new
+  #   # build_resource
+  #   # if session['devise.omniauth']
+  #   #   resource.password = resource.password_confirmation = Devise.friendly_token[0, 20]
+  #   # end
+  #   # respond_with resource
+  # end
 
   # POST /resource
-  def create
-    super do |resource|
-      if session['devise.omniauth'] && resource.persisted?
-        resource.create_authorization provider: session['devise.omniauth']['provider'], uid: session['devise.omniauth']['uid']
-        set_flash_message(:notice, :success, kind: session['devise.omniauth']['provider'].capitalize) if is_navigational_format?
-        session.delete("omniauth_data")
-      end
-    end
-  end
+  # def create
+  #   super do |resource|
+  #     if session['devise.omniauth'] && resource.persisted?
+  #       resource.create_authorization provider: session['devise.omniauth']['provider'], uid: session['devise.omniauth']['uid']
+  #       set_flash_message(:notice, :success, kind: session['devise.omniauth']['provider'].capitalize) if is_navigational_format?
+  #       session.delete("omniauth_data")
+  #     end
+  #   end
+  # end
 
   # GET /resource/edit
   # def edit

@@ -49,7 +49,7 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
         end
 
         it { should_not be_user_signed_in }
-        it { should redirect_to new_user_registration_path }
+        it { should render_template 'oauth/provide_email' }
       end
     end    
   end
@@ -99,9 +99,37 @@ RSpec.describe Users::OmniauthCallbacksController, type: :controller do
         end
 
         it { should_not be_user_signed_in }
-        it { should redirect_to new_user_registration_path }
+        it { should render_template 'oauth/provide_email' }
       end
     end    
+  end
+
+  describe 'POST #finish_signin' do
+    let(:user) { create :user }
+
+    context 'when there is user with same email' do
+      before { post :finish_signin, email: user.email }
+
+      it { should_not be_user_signed_in }
+      it { should render_template 'oauth/provide_email' }
+    end
+
+    context 'when invalid email' do
+      before { post :finish_signin, email: nil }
+
+      it { should_not be_user_signed_in }
+      it { should render_template 'oauth/provide_email' }
+    end
+
+    context 'when valid email' do
+      before do
+        session["devise.omniauth"] = stub_env_for_omniauth(info: nil)
+        post :finish_signin, email: 'valid@email.com'
+      end
+
+      it { should be_user_signed_in }
+      it { should redirect_to root_path }
+    end
   end
 
   def stub_env_for_omniauth(hash = {})

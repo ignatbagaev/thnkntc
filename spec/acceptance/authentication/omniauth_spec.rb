@@ -21,8 +21,8 @@ feature "through twitter" do
     visit new_user_session_path
     mock_twitter_auth_hash
     click_link "Sign in with Twitter"
-    fill_in 'Email', with: 'email@example.com'
-    click_button 'Sign up'
+    fill_in 'email', with: 'email@example.com'
+    click_button 'submit'
     expect(page).to have_content("Log out")
   end
 

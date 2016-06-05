@@ -1,0 +1,4 @@
+= form_tag controller: 'users/omniauth_callbacks', action: 'finish_signin', method: 'post' do
+  = label_tag :email, 'Type your email please:'
+  = text_field_tag :email
+  = submit_tag 'submit'

@@ -4,6 +4,8 @@ class AttachmentsController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+  
   def destroy
     respond_with(@attachment.destroy)
   end

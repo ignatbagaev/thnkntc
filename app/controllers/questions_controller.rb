@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   before_action :check_author, only: [:update, :destroy]
 
   respond_to :js, only: :update
+  
+  authorize_resource
 
   def new
     respond_with(@question = Question.new)

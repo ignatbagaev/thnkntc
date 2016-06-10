@@ -20,17 +20,17 @@ class Ability
   end
 
   def voting_abilities
-    [:upvote, :downvote, :unvote].each do |vote|
-      can vote, [Answer, Question] do |votable|
-        votable.user_id != @user.id
-      end
+    can [:upvote, :downvote], [Answer, Question] do |votable|
+      votable.votes.find_by(user_id: @user.id).nil? && !@user.author_of?(votable)
+    end
+    can :unvote, [Answer, Question] do |votable|
+      votable.votes.find_by(user_id: @user.id) && !@user.author_of?(votable)
     end
   end
 
   def owner_abilities
-    can :update, [Question, Answer], user_id: @user.id
-    can :destroy, [Question, Answer], user_id: @user.id
-    can :destroy, Attachment, attachable: { user_id: @user.id}
+    can [:update, :destroy], [Question, Answer], user_id: @user.id
+    can :destroy, Attachment, attachable: { user_id: @user.id }
     can :accept, Answer, question: { user_id: @user.id }
   end
 

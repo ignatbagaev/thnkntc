@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :check_author, only: [:update, :destroy]
 
   respond_to :js
-  
+
   authorize_resource
 
   def create

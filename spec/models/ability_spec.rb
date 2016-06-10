@@ -49,13 +49,9 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to :downvote, create(:question, user: user) }
     it { should_not be_able_to :downvote, create(:answer, user: user) }
 
-    it { should be_able_to :unvote, create(:question, user: user2) }
-    it { should be_able_to :unvote, create(:answer, user: user2) }
+    it { should be_able_to :unvote, create(:question, user: user2, votes: create_list(:vote, 1, user: user)) }
+    it { should be_able_to :unvote, create(:answer, user: user2, votes: create_list(:vote, 1, user: user)) }
     it { should_not be_able_to :unvote, create(:question, user: user) }
     it { should_not be_able_to :unvote, create(:answer, user: user) }
-
-
-
-
   end
 end

@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   devise_scope :user do
     post 'oauth/finish_signin', to: 'users/omniauth_callbacks#finish_signin'
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles do
+        get :me, on: :collection
+      end
+    end
   end
 
   root 'questions#index'

@@ -38,6 +38,7 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+gem 'doorkeeper'
 gem 'cancancan', '~> 1.10'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -58,6 +59,7 @@ group :development, :test do
   gem 'launchy'
   gem "capybara-webkit", git: "github.com:thoughtbot/capybara-webkit.git"
   gem 'database_cleaner'
+  gem 'json_spec'
 # github.com:thoughtbot/capybara-webkit.git
 
 end

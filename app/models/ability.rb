@@ -14,8 +14,8 @@ class Ability
 
   def user_abilities
     can :create, [Question, Answer, Comment, Attachment]
-    can :me, User
     guest_abilities
+    can [:me, :index], User
     owner_abilities
     voting_abilities
   end
@@ -37,5 +37,6 @@ class Ability
 
   def guest_abilities
     can :read, :all
+    cannot :read, User
   end
 end

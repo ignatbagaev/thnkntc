@@ -1,10 +1,6 @@
 module Api
   module V1
-    class QuestionsController < ApplicationController
-      skip_before_action :authenticate_user!
-      before_action :doorkeeper_authorize!
-      respond_to :json
-
+    class QuestionsController < Api::V1::BaseController
       authorize_resource
 
       def index

@@ -6,7 +6,7 @@ RSpec.describe Ability, type: :model do
   context 'when guest' do
     let(:user) { nil }
     it { should be_able_to :read, :all }
-    it { should_not be_able_to :read, User}
+    it { should_not be_able_to :read, User }
 
     it { should_not be_able_to :manage, :all }
   end

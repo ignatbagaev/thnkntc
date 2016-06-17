@@ -2,6 +2,8 @@ class Question < ActiveRecord::Base
   include Attachable
   include Votable
 
+  default_scope { order(created_at: :desc) }
+  
   has_many :answers, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   belongs_to :user

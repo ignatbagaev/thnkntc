@@ -16,10 +16,6 @@
 h4 > p {
   color: #777;
 }
-.list-group-item {
-  border: none;
-  padding: 0;
-}
 .new-answer-form label, .accept-hidden, .edit-answer, .edit-question {
   display: none;
 }

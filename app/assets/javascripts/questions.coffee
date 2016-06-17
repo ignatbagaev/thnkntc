@@ -14,7 +14,7 @@ ready = ->
     console.log("Error");
 
   PrivatePub.subscribe "/questions", (data, channel) ->
-    $('tbody').append('<tr id=' + data.question.id + '><td><a href="questions/'+ data.question.id + '">' + data.question.title + '</a></td></tr>')
+    $('div.list-group').prepend('<a id=' + data.question.id + ' class="list-group-item" href="questions/'+ data.question.id + '">' + data.question.title + '</a>')
 
   PrivatePub.subscribe "/questions_destroying", (data, channel) ->
     $('tr#'+ data.question.id).remove()

@@ -1,34 +1,21 @@
 require_relative '../acceptance_helper'
 
-feature 'User could see list of questions', '
+feature 'anybody could see list of questions', '
   In order to be able to find some question
   As user
-  I want to have access to listing of all questions
+  I want to have access to list of questions
 ' do
-  context 'when user is not authorized' do
-    scenario 'page has not links to new question path' do
-      visit questions_path
-      expect(page).to_not have_selector(:link_or_button, 'Be first!')
-    end
+
+  scenario 'when there are no questions' do
+    visit questions_path
+    expect(page).to have_content 'No questions.'
   end
 
-  given(:user) { create :user }
-
-  context 'when user authorized and there are not questions' do
-    scenario 'user could see link to create first question' do
-      log_in user
-      visit questions_path
-      expect(page).to have_selector(:link_or_button, 'Be first!')
-    end
-  end
-
-  context 'when user authorized and there are questions' do
+  context 'when there are questions' do
     given!(:questions) { create_list(:question, 5) }
-    scenario 'user could see listing of questions' do
-      log_in user
+
+    scenario 'could see list of questions' do
       visit questions_path
-      expect(page).to_not have_selector(:link_or_button, 'Be first!')
-      expect(page).to have_selector(:link_or_button, 'New question')
       questions.each do |question|
         expect(page).to have_selector(:link_or_button, question.title)
       end

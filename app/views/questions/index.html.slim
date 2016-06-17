@@ -1,23 +1,10 @@
 - if @questions.any?
-  = pluralize(@questions.count, "question")
-    |  here
-  table.table.table-hover
-    thead
-      tr
-        th Title
-    tbody
-      - @questions.each do |question|
-        tr id="#{question.id}"
-          td= link_to question.title, question
+  p= pluralize(@questions.count, "question")
+  .list-group
+    - @questions.each do |question|
+      = link_to question.title, question, class: 'list-group-item', id: "#{question.id}"
 - else 
-  h4.text-center
-    | Nobody left questions yet.
-    br
-    - if current_user
-      = link_to 'Be first!', new_question_path, class: 'default'
-    - else 
-      = link_to 'Sign in', new_user_session_path, class: 'default'
-      |  to do it!
+  h4.text-center No questions.
 
 = subscribe_to "/questions"
 = subscribe_to "/questions_destroying"

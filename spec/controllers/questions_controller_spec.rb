@@ -22,7 +22,7 @@ RSpec.describe QuestionsController, type: :controller do
     let(:questions) { create_list(:question, 5) }
     before { get :index }
     it 'assigns all questions to @questions' do
-      expect(assigns(:questions)).to eq questions
+      expect(assigns(:questions)).to eq questions.reverse
     end
   end
 

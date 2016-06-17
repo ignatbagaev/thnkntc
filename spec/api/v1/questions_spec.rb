@@ -30,7 +30,7 @@ describe 'Questions API' do
 
       %w(id title body created_at updated_at).each do |attr|
         it "contains #{attr} in question" do
-          question = questions.first
+          question = questions.last
           expect(response.body)
             .to be_json_eql(question.send(attr.to_sym).to_json)
             .at_path("questions/0/#{attr}")

@@ -9,7 +9,6 @@ feature 'User could see list of questions', '
     scenario 'page has not links to new question path' do
       visit questions_path
       expect(page).to_not have_selector(:link_or_button, 'Be first!')
-      expect(page).to_not have_selector(:link_or_button, 'New question')
     end
   end
 

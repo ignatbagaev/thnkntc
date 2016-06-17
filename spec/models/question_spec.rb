@@ -2,13 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
-  it { should have_many(:attachments).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
   it { should belong_to :user }
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
   it { should validate_presence_of :user_id }
-  it { should accept_nested_attributes_for :attachments }
   it { should respond_to(:has_accepted_answer?) }
   it { should respond_to(:rating) }
 
@@ -19,6 +17,7 @@ RSpec.describe Question, type: :model do
   let(:negative_vote) { create :negative_vote }
 
   it_behaves_like 'votable'
+  it_behaves_like 'attachable'
 
   describe '#has_accepted_answer?' do
     it 'returns true if question has accepted answer' do

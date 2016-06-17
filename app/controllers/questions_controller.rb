@@ -24,7 +24,7 @@ class QuestionsController < ApplicationController
 
   def create
     respond_with(@question = Question.create(question_params.merge(user: current_user)))
-    PrivatePub.publish_to '/questions', question: @question if @question.valid?
+    publish_to('/questions') if @question.valid?
   end
 
   def update
@@ -34,7 +34,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     respond_with(@question.destroy)
-    PrivatePub.publish_to '/questions_destroying', question: @question if @question.destroyed?
+    publish_to('/questions_destroying') if @question.destroyed?
   end
 
   private
@@ -52,5 +52,9 @@ class QuestionsController < ApplicationController
     if request.format.js? then (render status: 403)
     elsif request.format.html? then redirect_to questions_path
     end
+  end
+
+  def publish_to(channel)
+    PrivatePub.publish_to channel, question: @question
   end
 end

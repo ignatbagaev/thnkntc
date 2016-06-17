@@ -66,6 +66,10 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
+      it 'publishes questions' do
+        expect(PrivatePub).to receive(:publish_to).with('/questions', question: kind_of(Question))
+        post :create, question: attributes_for(:question)
+      end
     end
 
     context 'with invalid attributes when user logged in' do
@@ -148,6 +152,11 @@ RSpec.describe QuestionsController, type: :controller do
         it 'redirects to questions list' do
           delete :destroy, id: question.id
           expect(response).to redirect_to questions_path
+        end
+        it 'publishes questions' do
+          expect(PrivatePub).to receive(:publish_to)
+            .with('/questions_destroying', question: kind_of(Question))
+          delete :destroy, id: question.id
         end
       end
 

@@ -2,23 +2,13 @@ require 'rails_helper'
 
 describe 'Questions API' do
   describe 'GET #index' do
-    context 'when user is not authenticated' do
-      it 'return status 401 if there is no access token' do
-        get '/api/v1/questions', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        get '/api/v1/questions', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API unauthenticated'
 
     context 'when user authenticated' do
       let(:access_token) { create :access_token }
       let!(:questions) { create_list(:question, 2) }
 
-      before { get '/api/v1/questions', format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'returns status 200' do
         expect(response.status).to eq 200
@@ -37,22 +27,16 @@ describe 'Questions API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/questions', { format: :json }.merge(options)
+    end
   end
 
   describe 'GET #show' do
     let(:question) { create :question }
 
-    context 'when user is not authenticated' do
-      it 'return status 401 if there is no access token' do
-        get "/api/v1/questions/#{question.id}", format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        get "/api/v1/questions/#{question.id}", format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API unauthenticated'
 
     context 'when user authenticated' do
       let(:access_token) { create :access_token }
@@ -62,7 +46,7 @@ describe 'Questions API' do
       before do
         question.comments << comments
         question.attachments << attachments
-        get "/api/v1/questions/#{question.id}", format: :json, access_token: access_token.token
+        do_request(access_token: access_token.token)
       end
 
       it 'returns status 200' do
@@ -97,59 +81,50 @@ describe 'Questions API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}", { format: :json }.merge(options)
+    end
   end
 
   describe 'POST #create' do
-    context 'when user is not authenticated' do
-      it 'return status 401 if there is no access token' do
-        post '/api/v1/questions', question: attributes_for(:question), format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        post '/api/v1/questions', question: attributes_for(:question), format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API unauthenticated'
 
     context 'when user is authenticated' do
       let(:user) { create :user }
       let(:access_token) { create :access_token, resource_owner_id: user.id }
       context 'valid params' do
         it 'returns status 201' do
-          post '/api/v1/questions',
-               question: attributes_for(:question), format: :json, access_token: access_token.token
+          do_request(question: attributes_for(:question), access_token: access_token.token)
           expect(response.status).to eq 201
         end
 
         it 'returns attributes of created question' do
-          post '/api/v1/questions',
-               question: { title: 'Title', body: 'Body' }, access_token: access_token.token, format: :json
+          do_request(question: { title: 'Title', body: 'Body' }, access_token: access_token.token)
           expect(response.body).to be_json_eql({ title: 'Title', body: 'Body' }.to_json).at_path('question')
         end
 
         it 'saves questions to database' do
-          expect do
-            post '/api/v1/questions',
-                 question: attributes_for(:question), format: :json, access_token: access_token.token
-          end.to change(user.questions, :count).by(1)
+          expect { do_request(question: attributes_for(:question), access_token: access_token.token) }
+            .to change(user.questions, :count).by(1)
         end
       end
 
       context 'invalid params' do
         it 'returns status 422' do
-          post '/api/v1/questions',
-               question: attributes_for(:invalid_question), format: :json, access_token: access_token.token
+          do_request(question: attributes_for(:invalid_question), access_token: access_token.token)
           expect(response.status).to eq 422
         end
 
         it 'does not saves questions to database' do
-          expect do
-            post '/api/v1/questions',
-                 question: attributes_for(:invalid_question), format: :json, access_token: access_token.token
-          end.to_not change(Question, :count)
+          expect { do_request(question: attributes_for(:invalid_question), access_token: access_token.token) }
+            .to_not change(Question, :count)
         end
       end
+    end
+
+    def do_request(options = {})
+      post '/api/v1/questions', { format: :json }.merge(options)
     end
   end
 end

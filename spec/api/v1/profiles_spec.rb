@@ -2,23 +2,13 @@ require 'rails_helper'
 
 describe 'Profile API' do
   describe 'GET #me' do
-    context 'when user is not authenticated' do
-      it 'return status 401 if there is no access token' do
-        get '/api/v1/profiles/me', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        get '/api/v1/profiles/me', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API unauthenticated'
 
     context 'when user is authenticated' do
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      before { get '/api/v1/profiles/me', format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'return status 200' do
         expect(response.status).to eq 200
@@ -36,27 +26,21 @@ describe 'Profile API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/profiles/me', { format: :json }.merge(options)
+    end
   end
 
   describe 'GET #index' do
-    context 'when user is not authenticated' do
-      it 'return status 401 if there is no access token' do
-        get '/api/v1/profiles', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'return status 401 if there is invalid access token' do
-        get '/api/v1/profiles', format: :json, access_token: '12345'
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API unauthenticated'
 
     context 'when user is authenticated' do
       let(:me) { create :user }
       let(:access_token) { create :access_token, resource_owner_id: me.id }
       let!(:other_users) { create_list(:user, 5) }
 
-      before { get '/api/v1/profiles', format: :json, access_token: access_token.token }
+      before { do_request(access_token: access_token.token) }
 
       it 'returns success' do
         expect(response.status).to eq 200
@@ -77,6 +61,10 @@ describe 'Profile API' do
           end
         end
       end
+    end
+
+    def do_request(options = {})
+      get '/api/v1/profiles', { format: :json }.merge(options)
     end
   end
 end

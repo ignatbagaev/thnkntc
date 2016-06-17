@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  it_behaves_like 'voted'
+
   describe 'GET #show' do
     let(:question) { create(:question) }
     before { get :show, id: question }
@@ -88,6 +90,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq 'Edited body'
       end
     end
+
     context 'user is logged in' do
       login_user
       it 'assigns requested question to @question' do
@@ -161,51 +164,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #upvote' do
-    context 'if user not logged in' do
-      let(:question) { create :question }
-      it 'do not upvotes question' do
-        post :upvote, id: question.id, format: :json
-        expect(question.reload.rating).to eq 0
-      end
-    end
-    context 'if user logged in' do
-      login_user
-      let(:question) { create :question }
-      it 'upvotes question' do
-        post :upvote, id: question.id, format: :json
-        expect(question.reload.rating).to eq 1
-      end
-    end
-  end
-
-  describe 'POST #downvote' do
-    context 'if user not logged in' do
-      let(:question) { create :question }
-      it 'do not downvotes question' do
-        post :upvote, id: question.id, format: :json
-        expect(question.reload.rating).to eq 0
-      end
-    end
-    context 'if user logged in' do
-      login_user
-      let(:question) { create :question }
-      it 'downvotes question' do
-        post :downvote, id: question.id, format: :json
-        expect(question.reload.rating).to eq(-1)
-      end
-    end
-  end
-
-  describe 'DELETE #unvote' do
-    login_user
-    let(:question) { create :question }
-    let(:vote) { create(:vote) }
-    it 'unvotes question' do
-      question.votes << vote
-      @user.votes << vote
-      delete :unvote, id: question.id, format: :json
-      expect(question.votes.find_by(user_id: @user)).to eq nil
-    end
+  def create_voted
+    create :question
   end
 end

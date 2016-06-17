@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  it_behaves_like 'voted'
+
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
 
@@ -43,6 +45,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     let(:answer) { create :answer }
+
     context 'user is not logged in' do
       it 'does not update the answer' do
         patch :update, id: answer, answer: { body: 'Edited body' }, format: :js
@@ -84,9 +87,9 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     login_user
     let(:user) { create :user }
+
     context 'by owner' do
       before do
-        question.answers << answer
         @user.answers << answer
       end
       it 'deletes answer' do
@@ -99,12 +102,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'by someone' do
       it 'does not delete answer' do
-        question.answers << answer
         user.answers << answer
         expect do
           delete :destroy, id: answer.id,
                            format: :js
-        end.to_not change(question.answers, :count)
+        end.to_not change(Answer, :count)
       end
     end
   end
@@ -148,51 +150,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'POST #upvote' do
-    context 'if user not logged in' do
-      let(:answer) { create :answer }
-      it 'do not upvotes answer' do
-        post :upvote, id: answer.id, format: :json
-        expect(answer.reload.rating).to eq 0
-      end
-    end
-    context 'if user logged in' do
-      login_user
-      let(:question) { create :question }
-      it 'upvotes answer' do
-        post :upvote, id: answer.id, format: :json
-        expect(answer.reload.rating).to eq 1
-      end
-    end
-  end
-
-  describe 'POST #downvote' do
-    context 'if user not logged in' do
-      let(:answer) { create :answer }
-      it 'do not downvotes answer' do
-        post :downvote, id: answer.id, format: :json
-        expect(answer.reload.rating).to eq 0
-      end
-    end
-    context 'if user logged in' do
-      login_user
-      let(:question) { create :question }
-      it 'downvotes answer' do
-        post :downvote, id: answer.id, format: :json
-        expect(answer.reload.rating).to eq(-1)
-      end
-    end
-  end
-
-  describe 'DELETE #unvote' do
-    login_user
-    let(:answer) { create :answer }
-    let(:vote) { create(:vote) }
-    it 'unvotes answer' do
-      answer.votes << vote
-      @user.votes << vote
-      delete :unvote, id: answer.id, format: :json
-      expect(answer.votes.find_by(user_id: @user)).to eq nil
-    end
+  def create_voted
+    create :answer
   end
 end

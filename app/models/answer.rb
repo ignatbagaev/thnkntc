@@ -10,7 +10,7 @@ class Answer < ActiveRecord::Base
 
   validates :body, :question_id, :user_id, presence: true
 
-  after_create :send_notification
+  after_create :notify_question_owner, :notify_question_subscribers
 
   def accept!
     transaction do
@@ -21,7 +21,11 @@ class Answer < ActiveRecord::Base
 
   private
 
-  def send_notification
+  def notify_question_owner
     NotificationsMailer.new_answer(self, question.user.email).deliver_later
+  end
+
+  def notify_question_subscribers
+    NotifySubscribersJob.perform_later(self, question)
   end
 end

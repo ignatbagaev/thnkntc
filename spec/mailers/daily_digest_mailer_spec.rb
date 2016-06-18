@@ -4,7 +4,7 @@ RSpec.describe DailyDigestMailer, type: :mailer do
 
   describe '#daily_digest' do
     let(:users) { create_list(:user, 2) }
-    let(:questions) { create_list(:question, 2) }
+    let!(:questions) { create_list(:question, 2, created_at: Time.now.midnight - 1.hour) }
     let(:email) { described_class.daily_digest(users.first) }
 
     it 'sends emails to each user' do

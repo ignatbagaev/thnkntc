@@ -43,6 +43,8 @@ gem 'cancancan', '~> 1.10'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'sidekiq'
+gem 'whenever', :require => false
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

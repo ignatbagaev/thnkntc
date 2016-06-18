@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resources :comments
       post :accept, on: :member
     end
+    resources :subscriptions, only: :create
   end
 
   resources :attachments, only: :destroy

@@ -9,6 +9,6 @@ RSpec.describe Subscription, type: :model do
 
   it do
     subject.user = FactoryGirl.build(:user)
-    should validate_uniqueness_of(:user_id).scoped_to(:question_id)
+    should validate_uniqueness_of(:user_id).scoped_to(:question_id).with_message('already subscribed')
   end
 end

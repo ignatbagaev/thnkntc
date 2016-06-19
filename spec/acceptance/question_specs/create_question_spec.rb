@@ -5,7 +5,6 @@ feature 'create question', '
   As user
   I can create a question
 ' do
-  
   context 'when user is not authenticated' do
     scenario 'could not visit new_question_path' do
       visit root_path
@@ -14,7 +13,7 @@ feature 'create question', '
       expect(page).to have_content 'You need to sign in'
     end
   end
-  
+
   context 'when user is authenticated' do
     given(:user) { create(:user) }
     before { log_in user }

@@ -10,9 +10,9 @@ feature 'cancel subscription' do
       expect(page).to_not have_link('cancel subscription')
     end
   end
-  
+
   context 'authenticated user' do
-    let(:subscription) { create(:subscription, question: question)}
+    let(:subscription) { create(:subscription, question: question) }
 
     before do
       user.subscriptions << subscription

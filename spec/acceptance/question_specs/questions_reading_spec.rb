@@ -5,7 +5,6 @@ feature 'anybody could see list of questions', '
   As user
   I want to have access to list of questions
 ' do
-
   scenario 'when there are no questions' do
     visit questions_path
     expect(page).to have_content 'No questions.'

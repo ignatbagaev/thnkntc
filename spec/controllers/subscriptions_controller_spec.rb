@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe SubscriptionsController, type: :controller do
   describe 'POST #create' do
     let(:user) { create :user }
-    let(:question) { create :question }   
+    let(:question) { create :question }
     before { user.questions << question }
 
     context 'when user is not authenticated' do
@@ -19,7 +19,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
     context 'when user authenticated' do
       login_user
-      
+
       context 'when already subscribed' do
         let(:subscription) { create(:subscription, question: question) }
         before { @user.subscriptions << subscription }
@@ -30,7 +30,8 @@ RSpec.describe SubscriptionsController, type: :controller do
 
       context 'when not subscribed' do
         it 'creates subscription' do
-          expect { post :create, question_id: question.id, format: :js }.to change(@user.subscriptions, :count).by 1
+          expect { post :create, question_id: question.id, format: :js }
+            .to change(@user.subscriptions, :count).by 1
         end
 
         it 'returns status 200' do
@@ -53,21 +54,22 @@ RSpec.describe SubscriptionsController, type: :controller do
       end
 
       it 'does not destroy subscription' do
-       expect { delete :destroy, id: subscription.id, format: :js }.to_not change(Subscription, :count)
+        expect { delete :destroy, id: subscription.id, format: :js }.to_not change(Subscription, :count)
       end
     end
 
     context 'when user authenticated' do
       login_user
       before { @user.subscriptions << subscription }
-      
+
       it 'returns status 200' do
         delete :destroy, id: subscription.id, format: :js
         expect(response.status).to eq 200
       end
       it 'destroys subscription' do
-        expect { delete :destroy, id: subscription.id, format: :js }.to change(@user.subscriptions, :count).by(-1)
+        expect { delete :destroy, id: subscription.id, format: :js }
+          .to change(@user.subscriptions, :count).by(-1)
       end
-    end 
+    end
   end
 end

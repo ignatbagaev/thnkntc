@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe NotificationsMailer, type: :mailer do
   describe '#new_answer' do
@@ -8,7 +8,7 @@ RSpec.describe NotificationsMailer, type: :mailer do
     let(:email) { described_class.new_answer(answer, user.email) }
 
     it 'sends email' do
-      expect { NotificationsMailer.new_answer(answer, user.email).deliver_now  }
+      expect { NotificationsMailer.new_answer(answer, user.email).deliver_now }
         .to change(ActionMailer::Base.deliveries, :count).by 1
     end
 

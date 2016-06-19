@@ -11,7 +11,7 @@ feature 'create subscription' do
       expect(page).to_not have_button('subscribe')
     end
   end
-  
+
   context 'authenticated user' do
     before { log_in user }
 

@@ -11,15 +11,11 @@ feature 'create subscription' do
       expect(page).to_not have_button('subscribe')
     end
   end
+  
   context 'authenticated user' do
     before { log_in user }
 
-    scenario 'could not subscribe on own question' do
-      visit question_path(own_question)
-      expect(page).to_not have_button('subscribe')
-    end
-
-    scenario 'could subscribe on anothers question', js: true do
+    scenario 'could subscribe on question', js: true do
       visit question_path(question)
       click_button('subscribe')
       expect(page).to have_link 'cancel subscription'

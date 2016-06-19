@@ -2,20 +2,24 @@ require 'rails_helper'
 
 RSpec.describe SubscriptionsController, type: :controller do
   describe 'POST #create' do
-    let(:question) { create :question }
-    context 'when user is not authenticated' do
-      it 'does not creates subscription' do
-        expect { post :create, question_id: question.id, format: :js }.to_not change(Subscription, :count)
-      end
+    let(:user) { create :user }
+    let(:question) { create :question }   
+    before { user.questions << question }
 
+    context 'when user is not authenticated' do
       it 'returns error 401' do
         post :create, question_id: question.id, format: :js
         expect(response.status).to eq 401
+      end
+
+      it 'does not creates subscription' do
+        expect { post :create, question_id: question.id, format: :js }.to_not change(Subscription, :count)
       end
     end
 
     context 'when user authenticated' do
       login_user
+      
       context 'when already subscribed' do
         let(:subscription) { create(:subscription, question: question) }
         before { @user.subscriptions << subscription }

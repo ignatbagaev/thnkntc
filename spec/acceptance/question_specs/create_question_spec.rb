@@ -26,6 +26,8 @@ feature 'create question', '
       click_on 'Ask'
       expect(page).to have_content 'My question'
       expect(page).to have_content 'Description of my issue'
+      expect(page).to have_content 'subscribed'
+      expect(page).to have_link 'cancel subscription'
     end
 
     scenario 'with invalid attributes if user logged in' do

@@ -3,7 +3,8 @@ class SubscriptionsController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    respond_with(@subscription = Subscription.create(question: @question, user: current_user))
+    @subscription = Subscription.create(question: @question, user: current_user)
+    respond_with(@subscription)
   end
 
   def destroy

@@ -10,6 +10,7 @@ div.question
           p= link_to "downvote", downvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
         - else
           p= link_to "unvote", unvote_question_path(@question), method: :delete, remote: true, class: 'vote_question', data:{ type: :html }
+      - if current_user
         .subscription
           - if current_user.subscriptions.find_by(question_id: @question.id)
             = link_to 'cancel subscription', subscription_path(@question.subscriptions.find_by(user_id: current_user.id)), method: :delete, remote: true, id: 'button_unsubscribe'

@@ -12,7 +12,15 @@ class Question < ActiveRecord::Base
 
   validates :title, :body, :user_id, presence: true
 
+  after_create :subscribe_author
+
   def has_accepted_answer?
     answers.where(accepted: true).exists?
+  end
+
+  private
+
+  def subscribe_author
+    subscriptions.create(user: user)
   end
 end

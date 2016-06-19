@@ -31,4 +31,18 @@ RSpec.describe Question, type: :model do
       expect(question.has_accepted_answer?).to eq false
     end
   end
+
+  describe '#subscribe_author' do
+    let(:user) { create :user }
+    let(:question) { build(:question, user: user) }
+
+    it 'subscribes question owner on question' do
+      expect { question.save }.to change(user.subscriptions, :count).by(1)
+    end
+
+    it 'performs after question has been created' do
+      expect(question).to receive(:subscribe_author)
+      question.save
+    end
+  end
 end

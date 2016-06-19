@@ -3,7 +3,6 @@ class QuestionsController < ApplicationController
 
   skip_before_action :authenticate_user!, only: [:show, :index]
   before_action :load_question, only: [:edit, :show, :update, :destroy, :upvote, :downvote, :unvote]
-  before_action :check_author, only: [:update, :destroy]
 
   respond_to :js, only: :update
 
@@ -45,13 +44,6 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
-  end
-
-  def check_author
-    return if current_user.author_of?(@question)
-    if request.format.js? then (render status: 403)
-    elsif request.format.html? then redirect_to questions_path
-    end
   end
 
   def publish_to(channel)

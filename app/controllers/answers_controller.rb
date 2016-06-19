@@ -2,7 +2,6 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :load_answer, only: [:update, :destroy, :accept]
-  before_action :check_author, only: [:update, :destroy]
 
   respond_to :js
 
@@ -30,10 +29,6 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
-  end
-
-  def check_author
-    render status: 403 unless current_user.author_of?(@answer)
   end
 
   def load_answer

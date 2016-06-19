@@ -160,14 +160,14 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
 
-      context 'someone\'s question' do
+      context "someone's question" do
         before { user.questions << question }
         it 'does not delete question' do
           expect { delete :destroy, id: question.id }.to_not change(Question, :count)
         end
-        it 'redirects to questions list' do
+        it 'redirects to root' do
           delete :destroy, id: question.id
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end

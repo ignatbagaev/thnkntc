@@ -1,6 +1,6 @@
 div.question
   - if current_user && current_user.subscriptions.find_by(question_id: @question.id)
-    b you are subscribed on this question
+    b.subscribed you are subscribed on this question
   div.row
     div.col-md-3
       p.question-rating= "rating: #{@question.rating || 0}"
@@ -10,8 +10,11 @@ div.question
           p= link_to "downvote", downvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
         - else
           p= link_to "unvote", unvote_question_path(@question), method: :delete, remote: true, class: 'vote_question', data:{ type: :html }
-        - unless current_user.subscriptions.find_by(question_id: @question.id)
-          = button_to 'subscribe', question_subscriptions_path(@question), remote: true, id: 'button_subscribe'
+        .subscription
+          - if current_user.subscriptions.find_by(question_id: @question.id)
+            = link_to 'cancel subscription', subscription_path(@question.subscriptions.find_by(user_id: current_user.id)), method: :delete, remote: true, id: 'button_unsubscribe'
+          - else
+            = button_to 'subscribe', question_subscriptions_path(@question), remote: true, id: 'button_subscribe'
     div.col-md-9
       h4 = @question.title
   div.col-md-12

@@ -4,5 +4,6 @@
   <% end %>
 <% else %>
   $('#button_subscribe').hide();
-  $('div.question').prepend('<b> you are subscribed on this question </b>')
+  $('div.subscription').prepend('<%= link_to "cancel subscription", subscription_path(@subscription), method: :delete, remote: true, id: "button_unsubscribe"%>');
+  $('div.question').prepend('<b class="subscribed"> you are subscribed on this question </b>')
 <% end %>

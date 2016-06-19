@@ -22,6 +22,7 @@ feature 'create subscription' do
     scenario 'could subscribe on anothers question', js: true do
       visit question_path(question)
       click_button('subscribe')
+      expect(page).to have_link 'cancel subscription'
       expect(page).to have_content 'subscribed'
     end
   end

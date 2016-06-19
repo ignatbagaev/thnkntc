@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :comments
       post :accept, on: :member
     end
-    resources :subscriptions, only: :create
+    resources :subscriptions, only: [:create, :destroy], shallow: true
   end
 
   resources :attachments, only: :destroy

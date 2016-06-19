@@ -13,7 +13,7 @@ class Ability
   private
 
   def user_abilities
-    can :create, [Question, Answer, Comment, Attachment]
+    can :create, [Question, Answer, Comment, Attachment, Subscription]
     guest_abilities
     can [:me, :index], User
     owner_abilities
@@ -30,7 +30,7 @@ class Ability
   end
 
   def owner_abilities
-    can [:update, :destroy], [Question, Answer], user_id: @user.id
+    can [:update, :destroy], [Question, Answer, Subscription], user_id: @user.id
     can :destroy, Attachment, attachable: { user_id: @user.id }
     can :accept, Answer, question: { user_id: @user.id }
   end

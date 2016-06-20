@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :votes
   has_many :comments
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def author_of?(obj)
     obj.user_id == id

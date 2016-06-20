@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:questions) }
   it { should have_many(:comments) }
   it { should have_many(:authorizations) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
   it { should respond_to(:author_of?) }
 
   let(:user) { create :user }

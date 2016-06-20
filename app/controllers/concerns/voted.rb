@@ -1,10 +1,6 @@
 module Voted
   extend ActiveSupport::Concern
 
-  included do
-    # before_action :vote, only: [:upvote, :downvote, :unvote]
-  end
-
   def upvote
     vote { @votable.upvote!(current_user) }
   end
@@ -21,11 +17,7 @@ module Voted
 
   def vote
     @votable = model_klass.find(params[:id])
-    if current_user.author_of?(@votable)
-      render head: 403
-    else
-      (yield if block_given?) && render_rating || render_error
-    end
+    (yield if block_given?) && render_rating || render_error
   end
 
   def model_klass

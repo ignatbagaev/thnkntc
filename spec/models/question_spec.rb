@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:comments).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
   it { should belong_to :user }
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
@@ -28,6 +29,20 @@ RSpec.describe Question, type: :model do
     it 'returns false if question has accepted answer' do
       question.answers << answer
       expect(question.has_accepted_answer?).to eq false
+    end
+  end
+
+  describe '#subscribe_author' do
+    let(:user) { create :user }
+    let(:question) { build(:question, user: user) }
+
+    it 'subscribes question owner on question' do
+      expect { question.save }.to change(user.subscriptions, :count).by(1)
+    end
+
+    it 'performs after question has been created' do
+      expect(question).to receive(:subscribe_author)
+      question.save
     end
   end
 end

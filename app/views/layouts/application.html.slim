@@ -12,6 +12,7 @@ html
         ul.nav.navbar-nav.pull-left
           li.pull-left= link_to "All Questions", root_path
           li.pull-left= link_to 'New question', new_question_path
+        = render 'search/form'
         ul.nav.navbar-nav.pull-right
           - if current_user
             li.pull-right= link_to "Log out", destroy_user_session_path, method: :delete

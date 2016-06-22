@@ -10,9 +10,9 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
-  end
+  # config.before(:each) do
+  #   DatabaseCleaner.strategy = :deletion
+  # end
 
   config.before(:each, type: :feature) do
     # :rack_test driver's Rack app under test shares database connection
@@ -23,7 +23,7 @@ RSpec.configure do |config|
       # Driver is probably for an external browser with an app
       # under test that does *not* share a database connection with the
       # specs, so use truncation strategy.
-      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.strategy = :deletion
     end
   end
 

@@ -4,8 +4,8 @@ RSpec.describe SearchController, type: :controller do
 
   describe "GET #index" do
     it 'calls #find on Search model' do
-      expect(Search).to receive(:find).with('123')
-      get :index, query: '123'
+      expect(Search).to receive(:find).with('query', 'object')
+      get :index, query: 'query', object: 'object'
     end
     it 'renders index template' do
       get :index

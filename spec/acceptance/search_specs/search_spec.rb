@@ -1,20 +1,50 @@
 require 'rails_helper'
 
 feature 'searching' do
-  given!(:question1) { create(:question, title: 'findme', body: 'body') }
-  given!(:question2) { create(:question, title: 'title1', body: 'findme') }
-  given!(:question3) { create(:question, title: 'title2', body: 'body') }
+  given!(:question1) { create(:question, title: 'find_question_title', body: 'body') }
+  given!(:question2) { create(:question, title: 'title1', body: 'find_question_body') }
+  given!(:question3) { create(:question, title: 'notme', body: 'notme') }
+  given!(:answer1) { create(:answer, body: 'find_answer_body') }
+  given!(:answer2) { create(:answer, body: 'notme') }
+
   before do 
     index
     visit root_path
   end
 
-  scenario 'anybody can find any question' do
+  scenario 'searching in everywhere' do
     fill_in 'query', with: 'find'
-    click_button 'Search it'
+    select 'everywhere', from: 'object'
+    click_button 'Search'
     expect(current_path).to eq search_index_path
-    expect(page).to have_content(question1.title)
-    expect(page).to have_content(question2.title)
-    expect(page).to_not have_content(question3.title)
+    expect(page).to have_link(question1.title)
+    expect(page).to have_link(question2.title)
+    expect(page).to have_link(answer1.body)
+    expect(page).to_not have_link(question3.title)
+    expect(page).to_not have_link(answer2.body)
+  end
+
+  scenario 'searching for question' do
+    fill_in 'query', with: 'find'
+    select 'questions', from: 'object'
+    click_button 'Search'
+    expect(current_path).to eq search_index_path
+    expect(page).to have_link(question1.title)
+    expect(page).to have_link(question2.title)
+    expect(page).to_not have_link(answer1.body)
+    expect(page).to_not have_link(question3.title)
+    expect(page).to_not have_link(answer2.body)
+  end
+
+  scenario 'searching for answer' do
+    fill_in 'query', with: 'find'
+    select 'answers', from: 'object'
+    click_button 'Search'
+    expect(current_path).to eq search_index_path
+    expect(page).to have_link(answer1.body)
+    expect(page).to_not have_link(question1.title)
+    expect(page).to_not have_link(question2.title)
+    expect(page).to_not have_link(question3.title)
+    expect(page).to_not have_link(answer2.body)
   end
 end

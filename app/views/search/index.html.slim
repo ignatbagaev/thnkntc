@@ -1,11 +1,11 @@
 - if @query && !@query.strip.empty?
-  - if @questions.any?
+  - if @results.any?
     p
-      = pluralize(@questions.count, "question")
+      = pluralize(@results.count, "result")
       = ' found'
     .list-group
-      - @questions.each do |question|
-        = link_to question.title, question, class: 'list-group-item', id: "#{question.id}"
+      - @results.each do |object|
+        = render "#{object.class.name.downcase}_found", object: object
   - else 
     h4.text-center= "No questions found for query '#{@query}'" 
 -else

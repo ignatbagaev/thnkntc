@@ -6,6 +6,8 @@ feature 'searching' do
   given!(:question3) { create(:question, title: 'notme', body: 'notme') }
   given!(:answer1) { create(:answer, body: 'find_answer_body') }
   given!(:answer2) { create(:answer, body: 'notme') }
+  given!(:comment1) { create(:comment, body: 'find_comment_body', commentable: answer1) }
+  given!(:comment2) { create(:comment, body: 'notme') }
 
   before do 
     index
@@ -20,8 +22,7 @@ feature 'searching' do
     expect(page).to have_link(question1.title)
     expect(page).to have_link(question2.title)
     expect(page).to have_link(answer1.body)
-    expect(page).to_not have_link(question3.title)
-    expect(page).to_not have_link(answer2.body)
+    expect(page).to have_link(comment1.body)
   end
 
   scenario 'searching for question' do
@@ -31,9 +32,6 @@ feature 'searching' do
     expect(current_path).to eq search_index_path
     expect(page).to have_link(question1.title)
     expect(page).to have_link(question2.title)
-    expect(page).to_not have_link(answer1.body)
-    expect(page).to_not have_link(question3.title)
-    expect(page).to_not have_link(answer2.body)
   end
 
   scenario 'searching for answer' do
@@ -42,9 +40,13 @@ feature 'searching' do
     click_button 'Search'
     expect(current_path).to eq search_index_path
     expect(page).to have_link(answer1.body)
-    expect(page).to_not have_link(question1.title)
-    expect(page).to_not have_link(question2.title)
-    expect(page).to_not have_link(question3.title)
-    expect(page).to_not have_link(answer2.body)
+  end
+
+  scenario 'searching for comment' do
+    fill_in 'query', with: 'find'
+    select 'comments', from: 'object'
+    click_button 'Search'
+    expect(current_path).to eq search_index_path
+    expect(page).to have_link(comment1.body)
   end
 end

@@ -9,6 +9,8 @@ RSpec.describe Search, type: :sphinx do
     let!(:answer2) { create(:answer, body: 'notme') }
     let!(:comment1) { create(:comment, body: 'find_comment_body', commentable: answer1) }
     let!(:comment2) { create(:comment, body: 'notme') }
+    let!(:user1) { create(:user, email: 'findmeuser@mail.com', password: 'password')}
+    let!(:user2) { create(:user, email: 'notmeuser@mail.com', password: 'password')}
     
     before(:each) do
       index
@@ -16,22 +18,31 @@ RSpec.describe Search, type: :sphinx do
 
     context 'when valid arguments' do
       it 'returns requested objects' do
-        expect(Search.find('find', 'everywhere')).to match_array [question2, question1, answer1, comment1]
+        expect(Search.find('find', 'everywhere'))
+          .to match_array [question2, question1, answer1, comment1, user1]
       end
       it 'returns requested questions' do
-        expect(Search.find('find', 'questions')).to match_array [question2, question1]
+        expect(Search.find('find', 'questions'))
+          .to match_array [question2, question1]
       end
       it 'returns requested answers' do
-        expect(Search.find('find', 'answers')).to match_array [answer1]
+        expect(Search.find('find', 'answers'))
+          .to match_array [answer1]
       end
       it 'returns requested comments' do
-        expect(Search.find('find', 'comments')).to match_array [comment1]
+        expect(Search.find('find', 'comments'))
+          .to match_array [comment1]
+      end
+      it 'returns requested comments' do
+        expect(Search.find('find', 'users'))
+          .to match_array [user1]
       end
     end
 
     context 'when invalid arguments'
       it 'returns empty array' do
-        expect(Search.find('find', 'invalid')).to match_array []
+        expect(Search.find('find', 'invalid'))
+          .to match_array []
       end
   end
 end

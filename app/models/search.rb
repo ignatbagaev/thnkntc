@@ -1,5 +1,5 @@
 class Search
-  OBJECTS = %w(everywhere answers questions comments)
+  OBJECTS = %w(everywhere answers questions comments users)
 
   def self.find(query, object)
     return [] if Search.invalid?(query, object)

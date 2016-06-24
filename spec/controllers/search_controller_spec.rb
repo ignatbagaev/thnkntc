@@ -8,11 +8,11 @@ RSpec.describe SearchController, type: :controller do
       get :index, query: 'query', object: 'object'
     end
     it 'renders index template' do
-      get :index
+      get :index, query: 'query', object: 'object'
       expect(response).to render_template 'index'
     end
     it 'returns status 200' do
-      get :index
+      get :index, query: 'query', object: 'object'
       expect(response.status).to eq 200
     end
   end

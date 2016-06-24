@@ -25,3 +25,16 @@ h4 > p {
 .new_comment_form {
   display: none;
 }
+
+.navbar {
+  border: none;
+}
+.list-group-item {
+  border: none !important;
+}
+.form-control {
+  padding: 2px;
+}
+.btn, nav, .list-group-item, .form-control {
+  border-radius: 0 !important;
+} 

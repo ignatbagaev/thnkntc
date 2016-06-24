@@ -7,18 +7,18 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    nav.navbar.navbar-default
+    nav.navbar.navbar-inverse
       .container
         ul.nav.navbar-nav.pull-left
-          li.pull-left= link_to "All Questions", root_path
-          li.pull-left= link_to 'New question', new_question_path
-        = render 'search/form'
+          li= link_to "Questions", root_path
+          li= link_to 'Ask question', new_question_path
+        = render 'search/form'  
         ul.nav.navbar-nav.pull-right
           - if current_user
             li.pull-right= link_to "Log out", destroy_user_session_path, method: :delete
           - else
-            li.pull-right= link_to "Sign in", new_user_session_path
             li.pull-right= link_to "Sign up", new_user_registration_path
+            li.pull-right= link_to "Sign in", new_user_session_path
     .container
       .text-center
         - if notice

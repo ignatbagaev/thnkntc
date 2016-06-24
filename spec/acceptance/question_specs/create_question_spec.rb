@@ -8,7 +8,7 @@ feature 'create question', '
   context 'when user is not authenticated' do
     scenario 'could not visit new_question_path' do
       visit root_path
-      click_link 'New question'
+      click_link 'Ask question'
       expect(current_path).to eq new_user_session_path
       expect(page).to have_content 'You need to sign in'
     end

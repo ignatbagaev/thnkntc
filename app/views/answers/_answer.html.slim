@@ -1,56 +1,50 @@
 - if answer.persisted?
   li.list-group-item id="answer-row-#{answer.id}"
-    div id="answer-#{answer.id}" 
-      - if answer.accepted?
-        b Best answer
-      p id="rating-answer-#{answer.id}"
-        = "rating: #{answer.rating || 0}"
+    div id="answer-#{answer.id}"
+      .acception
+        - if answer.accepted?
+          b Best answer
+        h6.text-right
+          / #TODO: find the way to refactor accept buttons
+          - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?
 
-      - if current_user && !current_user.author_of?(answer)
-        - if current_user.votes.find_by(votable: answer).nil?
-          p= link_to "upvote", upvote_answer_path(answer), method: :post, remote: true, id: "upvote-answer-#{answer.id}", class: 'vote_answer', data: { type: :html, answer_id: answer.id }
-          p= link_to "downvote", downvote_answer_path(answer), method: :post, remote: true, id: "downvote-answer-#{answer.id}", class: 'vote_answer', data: { type: :html, answer_id: answer.id }
-        - else
-          p= link_to "unvote", unvote_answer_path(answer), method: :delete, remote: true, id: "unvote-answer-#{answer.id}", class: 'vote_answer', data:{ type: :html, answer_id: answer.id }
-      
-      h5= answer.body
-      - if answer.attachments.exists?
-        p
-          b Attachments:
+            - if answer.accepted?
+              = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden pull-right', id: "accept-#{answer.id}"
+            -else 
+              = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept pull-right', id: "accept-#{answer.id}"
+
+          - elsif (current_user && current_user.author_of?(answer.question))
+            = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept pull-right', id: "accept-#{answer.id}"
+      .voting
+        = link_to_upvote_answer(answer)
+        = link_to_downvote_answer(answer)
+        = link_to_unvote_answer(answer)
+        p id="rating-answer-#{answer.id}"
+          = "rating: #{answer.rating || 0}"
+        br
+      h4= simple_format answer.body
+      - if answer.attachments.any?
+        b Attachments:
         ul
-          - answer.attachments.each do |attachment|
-            li id="attachment_#{attachment.id}"
-              = link_to attachment.file.filename, attachment.file.url, target: '_blank'
-              -if current_user && current_user.author_of?(attachment.attachable)
-                = link_to "Delete file", attachment_path(attachment), method: :delete, remote: true, id: "delete_attachment_#{attachment.id}"
+          = render answer.attachments
 
-      h6.text-right
-        / #TODO: find the way to refactor accept buttons
-        - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?
-
-          - if answer.accepted?
-            = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden', id: "accept-#{answer.id}"
-          -else 
-            = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}"
-
-        - elsif (current_user && current_user.author_of?(answer.question))
-          = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept', id: "accept-#{answer.id}"
-
-        - if current_user && current_user.author_of?(answer) 
-          = link_to 'Edit answer', edit_answer_path(answer), class: "btn-sm btn-default edit-answer-link edit-answer-link-#{answer.id}", data: {answer_id: answer.id}
-          = link_to 'Delete answer', answer_path(answer), method: :delete, remote: true, class: 'btn-sm btn-default'
-
-    div.errors id="answer-error-#{answer.id}"
+      .actions.pull-left
+        = answer_edit_link(answer)
+        = answer_destroy_link(answer)
+      br
     div.edit-answer id="edit-answer-#{answer.id}"
+      div.errors id="answer-error-#{answer.id}"
+      
       = nested_form_for answer, remote: true do |f|
-        = f.label :body
-        = f.text_area :body, class: 'form-control'
-        = f.submit 'Save', class: 'btn btn-default'
-    - if current_user  
-      = render partial: 'comments/form', locals: { commentable: answer }
-    small
-      p
-        b comments
+        .field
+          = f.label :body
+          = f.text_area :body, class: 'form-control'
+        .actions
+          = f.submit 'Save', class: 'btn btn-default pull-right'
+    br
+    b Comments
+    br
+    = render partial: 'comments/form', locals: { commentable: answer }
     div id="comments_of_answer#{answer.id}"
       = render answer.comments
     hr

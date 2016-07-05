@@ -1,0 +1,4 @@
+li id="attachment_#{attachment.id}"
+  = link_to attachment.file.filename, attachment.file.url, target: '_blank'
+  -if can? :destroy, attachment
+    = link_to "Delete file", attachment_path(attachment), method: :delete, remote: true, id: "delete_attachment_#{attachment.id}"

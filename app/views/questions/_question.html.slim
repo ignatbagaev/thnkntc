@@ -1,60 +1,48 @@
-div.question
-  - if current_user && current_user.subscriptions.find_by(question_id: @question.id)
-    b.subscribed you are subscribed on this question
-  div.row
-    div.col-md-3
-      p.question-rating= "rating: #{@question.rating || 0}"
-      - if current_user && !current_user.author_of?(@question)
-        - if current_user.votes.find_by(votable: @question).nil?
-          p= link_to "upvote", upvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
-          p= link_to "downvote", downvote_question_path(@question), method: :post, remote: true, class: 'vote_question', data:{ type: :html }
-        - else
-          p= link_to "unvote", unvote_question_path(@question), method: :delete, remote: true, class: 'vote_question', data:{ type: :html }
-      - if current_user
-        .subscription
-          - if current_user.subscriptions.find_by(question_id: @question.id)
-            = link_to 'cancel subscription', subscription_path(@question.subscriptions.find_by(user_id: current_user.id)), method: :delete, remote: true, id: 'button_unsubscribe'
-          - else
-            = button_to 'subscribe', question_subscriptions_path(@question), remote: true, id: 'button_subscribe'
-    div.col-md-9
-      h4 = @question.title
-  div.col-md-12
-    h4= simple_format @question.body
-    - if @question.attachments.exists?
-      p
-        b Attachments:
-      ul
-        - @question.attachments.each do |attachment|
-          li id="attachment_#{attachment.id}"
-            = link_to attachment.file.filename, attachment.file.url, target: '_blank'  
-            -if current_user && current_user.author_of?(attachment.attachable)
-              = link_to "Delete file", attachment_path(attachment), method: :delete, remote: true, id: "delete_attachment_#{attachment.id}"
-    div.actions
-      div.pull-left
-        = link_to 'Back', questions_path, class: 'btn btn-default pull-right'
-      - if current_user && current_user.author_of?(@question)
-        div.pull-right
-          = link_to 'Edit question', edit_question_path(@question), class: 'btn btn-default edit-question-link'
-          = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-default delete_question_link'
-div.edit-question
-  div.question-error
+.question
+  .subscription
+    - if current_user
+      - if current_user.subscriptions.find_by(question_id: @question.id)
+        = link_to 'Cancel subscription', subscription_path(@question.subscriptions.find_by(user_id: current_user.id)), method: :delete, remote: true, id: 'button_unsubscribe', class: 'btn btn-default pull-right'
+      - else
+        = button_to 'Subscribe', question_subscriptions_path(@question), remote: true, id: 'button_subscribe', class: 'btn btn-default pull-right'
+  
+  .voting
+    = link_to_upvote_question(@question)
+    = link_to_downvote_question(@question)
+    = link_to_unvote_question(@question)
+    p.question-rating= "rating: #{@question.rating}"
+    br
+
+  h4= @question.title
+  h4= simple_format @question.body
+  - if @question.attachments.exists?
+    b Attachments:
+    ul
+      = render @question.attachments
+
+  .actions
+    .pull-left
+      = link_to 'Back', questions_path, class: 'btn btn-default'
+    .pull-right
+      = question_edit_link(@question)
+      = question_destroy_link(@question)
+
+.edit-question
+  .question-error
   = nested_form_for @question, remote: true do |f|
     = render 'shared/error_messages', object: f.object
-    div.field
+    .field
       = f.label :title
       = f.text_field :title, class: 'form-control'
-    div.field
+    .field
       = f.label :body
       = f.text_area :body, rows: '5', class: 'form-control'
-    div.actions
-      div.pull-right
-        = f.submit 'Update',class: 'btn btn-default'
+    .actions
+      = f.submit 'Update',class: 'btn btn-default pull-right'
 br
 hr
-- if current_user
-  = render partial: 'comments/form', locals: { commentable: @question }
-small
-  p
-    b comments
+b Comments
+br
+= render partial: 'comments/form', locals: { commentable: @question }
 div id="comments_of_question#{@question.id}"
   = render @question.comments

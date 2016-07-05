@@ -7,7 +7,7 @@ feature 'cancel subscription' do
   context 'guest user' do
     scenario 'could not cancel subscription' do
       visit question_path(question)
-      expect(page).to_not have_link('cancel subscription')
+      expect(page).to_not have_link('Cancel subscription')
     end
   end
 
@@ -20,10 +20,9 @@ feature 'cancel subscription' do
     end
     scenario 'could cancel subscription if user already subscribed', js: true do
       visit question_path(question)
-      click_link('cancel subscription')
-      expect(page).to_not have_link('cancel subscription')
-      expect(page).to have_button('subscribe')
-      expect(page).to_not have_content('subscribed')
+      click_link('Cancel subscription')
+      expect(page).to_not have_link('Cancel subscription')
+      expect(page).to have_button('Subscribe')
     end
   end
 end

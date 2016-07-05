@@ -3,7 +3,8 @@
     console.log('<%= j message %>');
   <% end %>
 <% else %>
-  $('#button_subscribe').hide();
-  $('div.subscription').prepend('<%= link_to "cancel subscription", subscription_path(@subscription), method: :delete, remote: true, id: "button_unsubscribe"%>');
-  $('div.question').prepend('<b class="subscribed"> you are subscribed on this question </b>')
+  $('#button_subscribe').remove();
+  $('div.subscription').prepend(
+    '<%= link_to "Cancel subscription", subscription_path(@subscription), method: :delete, remote: true, class: "btn btn-default pull-right", id: "button_unsubscribe"%>'
+  );
 <% end %>

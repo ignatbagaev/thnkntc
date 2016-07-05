@@ -8,20 +8,20 @@ feature 'vote for question' do
 
   scenario 'guest could not vote' do
     visit question_path(question)
-    expect(page).to_not have_link('upvote')
+    expect(page).to_not have_link('Upvote')
   end
 
   scenario 'user could upvote for anothers question', js: true do
     log_in user
     visit question_path(question)
-    click_link('upvote')
+    click_link('Upvote')
     expect(page).to have_content('rating: 1')
   end
 
   scenario 'user could downvote for anothers question', js: true do
     log_in user
     visit question_path(question)
-    click_link('downvote')
+    click_link('Downvote')
     expect(page).to have_content('rating: -1')
   end
 
@@ -29,8 +29,8 @@ feature 'vote for question' do
     log_in user
     user.questions << question
     visit question_path(question)
-    expect(page).to_not have_link('upvote')
-    expect(page).to_not have_link('downvote')
+    expect(page).to_not have_link('Upvote')
+    expect(page).to_not have_link('Downvote')
   end
 
   scenario 'user could not vote twice for question', js: true do
@@ -38,9 +38,9 @@ feature 'vote for question' do
     user.votes << vote
     question.votes << vote
     visit question_path(question)
-    expect(page).to_not have_link('upvote')
-    expect(page).to_not have_link('downvote')
-    expect(page).to have_link('unvote')
+    expect(page).to_not have_link('Upvote')
+    expect(page).to_not have_link('Downvote')
+    expect(page).to have_link('Unvote')
   end
 
   scenario 'user could unvote question', js: true do
@@ -48,7 +48,7 @@ feature 'vote for question' do
     user.votes << vote
     question.votes << vote
     visit question_path(question)
-    click_link('unvote')
+    click_link('Unvote')
     expect(page).to have_content('rating: 0')
   end
 end

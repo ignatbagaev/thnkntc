@@ -38,3 +38,7 @@ h4 > p {
 .btn, nav, .list-group-item, .form-control {
   border-radius: 0 !important;
 } 
+textarea#comment_body {
+  min-width: 100%;
+  max-width: 100%;
+}

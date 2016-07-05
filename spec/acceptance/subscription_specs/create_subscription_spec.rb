@@ -8,7 +8,7 @@ feature 'create subscription' do
   context 'guest user' do
     scenario 'could not subscribe on question' do
       visit question_path(question)
-      expect(page).to_not have_button('subscribe')
+      expect(page).to_not have_button('Subscribe')
     end
   end
 
@@ -17,9 +17,8 @@ feature 'create subscription' do
 
     scenario 'could subscribe on question', js: true do
       visit question_path(question)
-      click_button('subscribe')
-      expect(page).to have_link 'cancel subscription'
-      expect(page).to have_content 'subscribed'
+      click_button('Subscribe')
+      expect(page).to have_link 'Cancel subscription'
     end
   end
 end

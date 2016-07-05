@@ -10,7 +10,7 @@ feature 'create answers', '
 
   scenario 'unless user logged in' do
     visit question_path(question)
-    expect(page).to have_content('Sign in to do it')
+    expect(page).to_not have_content('New answer')
   end
 
   scenario 'with valid attributes if user logged in', js: true do

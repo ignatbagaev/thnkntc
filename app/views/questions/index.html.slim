@@ -1,10 +1,11 @@
-- if @questions.any?
-  p= pluralize(@questions.count, "question")
-  .list-group
-    - @questions.each do |question|
-      = link_to question.title, question, class: 'list-group-item', id: "#{question.id}"
-- else 
-  h4.text-center No questions.
+- cache collection_cache_key_for :question do
+  - if @questions.any?
+    p= pluralize(@questions.count, "question")
+    .list-group
+      - @questions.each do |question|
+        = link_to question.title, question, class: 'list-group-item', id: "#{question.id}"
+  - else 
+    h4.text-center No questions.
 
 = subscribe_to "/questions"
 = subscribe_to "/questions_destroying"

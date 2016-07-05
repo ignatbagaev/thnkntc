@@ -1,14 +1,13 @@
-- cache @question
-  .col-md-offset-2.col-md-8.col-sm-12
-    .question-item
-      = render @question
-    
-    .answers
-      hr
-      h5.text-center
-        strong Answers:
-      ul.list-group
-        = render @question.answers
+.col-md-offset-2.col-md-8.col-sm-12
+  .question-item
+    = render @question
+  
+  .answers
+    hr
+    h5.text-center
+      strong Answers:
+    ul.list-group
+      = render @question.answers
 
 .new-answer-form
   - if can? :create, Answer

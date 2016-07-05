@@ -12,9 +12,9 @@
     = link_to_unvote_question(@question)
     p.question-rating= "rating: #{@question.rating}"
     br
-
-  h4= @question.title
-  h4= simple_format @question.body
+  - cache @question do
+    h4= @question.title
+    h4= simple_format @question.body
   - if @question.attachments.exists?
     b Attachments:
     ul

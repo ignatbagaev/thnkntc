@@ -1,50 +1,51 @@
 - if answer.persisted?
-  li.list-group-item id="answer-row-#{answer.id}"
-    div id="answer-#{answer.id}"
-      .acception
-        - if answer.accepted?
-          b Best answer
-        h6.text-right
-          / #TODO: find the way to refactor accept buttons
-          - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?
+  - cache answer do
+    li.list-group-item id="answer-row-#{answer.id}"
+      div id="answer-#{answer.id}"
+        .acception
+          - if answer.accepted?
+            b Best answer
+          h6.text-right
+            / #TODO: find the way to refactor accept buttons
+            - if (current_user && current_user.author_of?(answer.question)) && answer.question.has_accepted_answer?
 
-            - if answer.accepted?
-              = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden pull-right', id: "accept-#{answer.id}"
-            -else 
-              = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept pull-right', id: "accept-#{answer.id}"
+              - if answer.accepted?
+                = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept accept-hidden pull-right', id: "accept-#{answer.id}"
+              -else 
+                = button_to "Better", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept pull-right', id: "accept-#{answer.id}"
 
-          - elsif (current_user && current_user.author_of?(answer.question))
-            = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept pull-right', id: "accept-#{answer.id}"
-      .voting
-        = link_to_upvote_answer(answer)
-        = link_to_downvote_answer(answer)
-        = link_to_unvote_answer(answer)
-        p id="rating-answer-#{answer.id}"
-          = "rating: #{answer.rating || 0}"
+            - elsif (current_user && current_user.author_of?(answer.question))
+              = button_to "Best", accept_answer_path(answer), remote: true, class: 'btn btn-default button-accept pull-right', id: "accept-#{answer.id}"
+        .voting
+          = link_to_upvote_answer(answer)
+          = link_to_downvote_answer(answer)
+          = link_to_unvote_answer(answer)
+          p id="rating-answer-#{answer.id}"
+            = "rating: #{answer.rating || 0}"
+          br
+        h4= simple_format answer.body
+        - if answer.attachments.any?
+          b Attachments:
+          ul
+            = render answer.attachments
+
+        .actions.pull-left
+          = answer_edit_link(answer)
+          = answer_destroy_link(answer)
         br
-      h4= simple_format answer.body
-      - if answer.attachments.any?
-        b Attachments:
-        ul
-          = render answer.attachments
-
-      .actions.pull-left
-        = answer_edit_link(answer)
-        = answer_destroy_link(answer)
+      div.edit-answer id="edit-answer-#{answer.id}"
+        div.errors id="answer-error-#{answer.id}"
+        
+        = nested_form_for answer, remote: true do |f|
+          .field
+            = f.label :body
+            = f.text_area :body, class: 'form-control'
+          .actions
+            = f.submit 'Save', class: 'btn btn-default pull-right'
       br
-    div.edit-answer id="edit-answer-#{answer.id}"
-      div.errors id="answer-error-#{answer.id}"
-      
-      = nested_form_for answer, remote: true do |f|
-        .field
-          = f.label :body
-          = f.text_area :body, class: 'form-control'
-        .actions
-          = f.submit 'Save', class: 'btn btn-default pull-right'
-    br
-    b Comments
-    br
-    = render partial: 'comments/form', locals: { commentable: answer }
-    div id="comments_of_answer#{answer.id}"
-      = render answer.comments
-    hr
+      b Comments
+      br
+      = render partial: 'comments/form', locals: { commentable: answer }
+      div id="comments_of_answer#{answer.id}"
+        = render answer.comments
+      hr

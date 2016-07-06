@@ -6,7 +6,7 @@ module QuestionsHelper
 
   def question_destroy_link(question, content = "Delete question")
     return unless can?(:destroy, question)
-    link_to(content, question, method: :delete, class: 'btn btn-default edit-question-link')
+    link_to(content, question, method: :delete, class: 'btn btn-default')
   end
 
   def link_to_upvote_question(question, content = "Upvote")

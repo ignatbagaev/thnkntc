@@ -5,40 +5,47 @@
   To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
   =require twitter-bootstrap-static/fontawesome
   */
-.notice {
-  border: 1px solid green;
-  border-radius: 5px;
-  color: green;
-}
-.col-md-11 {
-  padding-left: 0;
-}
-h4 > p {
-  color: #777;
-}
-.new-answer-form label, .accept-hidden, .edit-answer, .edit-question {
-  display: none;
-}
+
 .question-error, .errors {
   color: red;
 }
 .new_comment_form {
   display: none;
 }
-
+.notice {
+  border: 1px solid green;
+  border-radius: 5px;
+  color: green;
+}
+.new-answer-form label, .accept-hidden, .edit-answer, .edit-question {
+  display: none;
+}
 .navbar {
   border: none;
+  
+}
+.navbar .form-control {
+  padding: 4px;
+  margin-left: 2px;
 }
 .list-group-item {
   border: none !important;
 }
-.form-control {
-  padding: 2px;
-}
 .btn, nav, .list-group-item, .form-control {
   border-radius: 0 !important;
 } 
+
 textarea#comment_body {
-  min-width: 100%;
   max-width: 100%;
 }
+a {
+  color: #777;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+ul.nav li:hover {
+  background-color: #eee
+}
+

@@ -14,7 +14,7 @@ ready = ->
     console.log("Error");
 
   PrivatePub.subscribe "/questions", (data, channel) ->
-    $('div.questions').prepend('<div id="question-' + data.question.id + '"><a href="questions/'+ data.question.id + '"><h4>' + data.question.title + '</h4></a><hr></div>')
+    $('div.questions').prepend('<div id="question-' + data.question.id + '"><a href="questions/'+ data.question.id + '"><h5>' + data.question.title + '</h5></a></div>')
 
   PrivatePub.subscribe "/questions_destroying", (data, channel) ->
     $('div#question-'+ data.question.id).remove()

@@ -51,3 +51,7 @@ ul.nav li:hover {
 img {
   height: 20px;
 }
+p.alert {
+  display: inline-block;
+  padding: 7px;
+}

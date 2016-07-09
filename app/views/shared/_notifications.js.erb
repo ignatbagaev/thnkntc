@@ -1,0 +1,6 @@
+$('div.notifications').empty();
+<% if notice %>
+  $('div.notifications').append('<p class="alert alert-success"><%= j notice %></p>');
+<% elsif alert %>
+  $('div.notifications').append('<p class="alert alert-danger"><%= j alert %></p>');
+<% end %>

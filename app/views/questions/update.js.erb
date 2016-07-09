@@ -1,3 +1,5 @@
+<%= render 'shared/notifications' %>
+
 <% if @question.errors.present? %>
     $('div.question-error').html('');
   <% @question.errors.full_messages.each do |message| %>

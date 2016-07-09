@@ -1,3 +1,5 @@
+<%= render 'shared/notifications' %>
+
 var id = <%= @answer.id %>
 <% if @answer.errors.present? %>
   <% @answer.errors.full_messages.each do |message| %>

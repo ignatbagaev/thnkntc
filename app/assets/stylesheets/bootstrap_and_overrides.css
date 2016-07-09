@@ -6,7 +6,7 @@
   =require twitter-bootstrap-static/fontawesome
   */
 
-.question-error, .errors {
+.question-error, .errors, .error_explanation {
   color: red;
 }
 .new_comment_form {
@@ -48,4 +48,6 @@ a:hover {
 ul.nav li:hover {
   background-color: #eee
 }
-
+img {
+  height: 20px;
+}

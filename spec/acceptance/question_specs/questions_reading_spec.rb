@@ -5,19 +5,12 @@ feature 'anybody could see list of questions', '
   As user
   I want to have access to list of questions
 ' do
-  scenario 'when there are no questions' do
+  given!(:questions) { create_list(:question, 5) }
+
+  scenario 'anybody could see list of questions' do
     visit questions_path
-    expect(page).to have_content 'No questions.'
-  end
-
-  context 'when there are questions' do
-    given!(:questions) { create_list(:question, 5) }
-
-    scenario 'could see list of questions' do
-      visit questions_path
-      questions.each do |question|
-        expect(page).to have_selector(:link_or_button, question.title)
-      end
+    questions.each do |question|
+      expect(page).to have_selector(:link_or_button, question.title)
     end
   end
 end

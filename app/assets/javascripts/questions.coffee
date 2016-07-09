@@ -14,10 +14,10 @@ ready = ->
     console.log("Error");
 
   PrivatePub.subscribe "/questions", (data, channel) ->
-    $('div.list-group').prepend('<a id=' + data.question.id + ' class="list-group-item" href="questions/'+ data.question.id + '">' + data.question.title + '</a>')
+    $('div.questions').prepend('<div id="question-' + data.question.id + '"><a href="questions/'+ data.question.id + '"><h4>' + data.question.title + '</h4></a><hr></div>')
 
   PrivatePub.subscribe "/questions_destroying", (data, channel) ->
-    $('tr#'+ data.question.id).remove()
+    $('div#question-'+ data.question.id).remove()
 
 $(document).ready(ready);
 $(document).on('page:load', ready);

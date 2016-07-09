@@ -1,48 +1,5 @@
-.question
-  .subscription
-    - if current_user
-      - if current_user.subscriptions.find_by(question_id: @question.id)
-        = link_to 'Cancel subscription', subscription_path(@question.subscriptions.find_by(user_id: current_user.id)), method: :delete, remote: true, id: 'button_unsubscribe', class: 'btn btn-default pull-right'
-      - else
-        = button_to 'Subscribe', question_subscriptions_path(@question), remote: true, id: 'button_subscribe', class: 'btn btn-default pull-right'
-  
-  .voting
-    = link_to_upvote_question(@question)
-    = link_to_downvote_question(@question)
-    = link_to_unvote_question(@question)
-    p.question-rating= "rating: #{@question.rating}"
-    br
-  - cache @question do
-    h4= @question.title
-    h4= simple_format @question.body
-  - if @question.attachments.exists?
-    b Attachments:
-    ul
-      = render @question.attachments
-
-  .actions
-    .pull-left
-      = link_to 'Back', questions_path, class: 'btn btn-default'
-    .pull-right
-      = question_edit_link(@question)
-      = question_destroy_link(@question)
-
-.edit-question
-  .question-error
-  = nested_form_for @question, remote: true do |f|
-    = render 'shared/error_messages', object: f.object
-    .field
-      = f.label :title
-      = f.text_field :title, class: 'form-control'
-    .field
-      = f.label :body
-      = f.text_area :body, rows: '5', class: 'form-control'
-    .actions
-      = f.submit 'Update',class: 'btn btn-default pull-right'
-br
-hr
-b Comments
-br
-= render partial: 'comments/form', locals: { commentable: @question }
-div id="comments_of_question#{@question.id}"
-  = render @question.comments
+div id="question-#{question.id}"
+  - cache question do
+    = link_to question do
+      h4= question.title
+  hr
